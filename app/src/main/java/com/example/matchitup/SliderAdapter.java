@@ -1,6 +1,9 @@
 package com.example.matchitup;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 public class SliderAdapter extends PagerAdapter {
 
@@ -19,9 +25,15 @@ public class SliderAdapter extends PagerAdapter {
 
 
     static final int[] slideImages = {
-          R.drawable.jugar,
-          R.drawable.dict,
-          R.drawable.perfil
+            R.drawable.jugar,
+            R.drawable.dict,
+            R.drawable.perfil
+    };
+
+    static final Class[] slideClasses = {
+            GameActivity.class,
+            DictionaryActivity.class,
+            ProfileActivity.class
     };
 
     //TODO: CONSTANTES QUE CONTIENEN LA INFO DE LAS PANTALLAS
@@ -57,7 +69,7 @@ public class SliderAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position){
+    public Object instantiateItem(ViewGroup container, final int position){
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.slider_card, container, false);
 
@@ -68,6 +80,18 @@ public class SliderAdapter extends PagerAdapter {
         slideLogo.setImageResource(slideImages[position]);
         slideTitle.setText(slideTitles[position]);
         slideDescription.setText(slideDescriptions[position]);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, (Class<?>) slideClasses[position]);
+                //intent.putextra("your_extra","your_class_value");
+                //Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                context.startActivity(intent);
+                //Animatoo.animateShrink(context);
+
+            }
+        });
 
         container.addView(view);
 
