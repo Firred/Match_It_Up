@@ -63,27 +63,4 @@ public class Dictionary {
     public void setExamples(List<String> examples) {
         this.examples = examples;
     }
-
-    //Actualmente solo sirve para para pasar el JSON de randomWords a una lista de palabras
-    //(mover a una clase utils? mover a DictionaryService? who knows)
-    public static List<String> fromJsonResponse(String info) throws JSONException, MalformedURLException {
-        List<String> wordsList = null;
-        JSONObject data = new JSONObject(info);
-
-        if ((int) data.get("totalItems") > 0) {
-            wordsList = new ArrayList<>();
-            JSONArray itemsArray = (JSONArray) data.get("items");
-
-            for (int i = 0; i < itemsArray.length(); i++) {
-                JSONObject wordJson = itemsArray.getJSONObject(i);
-                if (wordJson.has("word")) {
-                    String word = wordJson.getString("word");
-
-                    wordsList.add(word);
-                }
-            }
-        }
-
-        return wordsList;
-    }
 }

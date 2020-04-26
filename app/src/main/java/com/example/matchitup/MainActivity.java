@@ -39,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Inicia la animación
         handler.postDelayed(runnable, 2600);
-    }
 
+        //Pruebas, borrar
+        new TestWorker().execute();
+    }
 
     private int convertDpToPx(int dp){
         return Math.round(dp*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
