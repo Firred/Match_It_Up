@@ -37,5 +37,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.github.mohammadatif:Animatoo:master'
+    //noinspection GradleCompatible
+    compile 'com.android.support:support-compat:25.1.1'
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
+    compile 'com.eftimoff:android-viewpager-transformers:1.0.1@aar'
 }

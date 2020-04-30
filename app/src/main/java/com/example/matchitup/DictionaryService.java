@@ -64,14 +64,18 @@ public class DictionaryService {
      * @param limit max number of words
      * @return list of words
      */
-    public static List<String> getRandomWords(int limit) {
+    public static List<String> getRandomWords(int limit, int lowFrecuency, int highFrecuency) {
         Uri builtURI = Uri.parse(BASE_URL+"words.json/randomWords").buildUpon()
                 .appendQueryParameter("limit", String.valueOf(limit))
+                .appendQueryParameter("minCorpusCount", String.valueOf(lowFrecuency))
+                .appendQueryParameter("maxCorpusCount", String.valueOf(highFrecuency))
+                .appendQueryParameter("hasDictionaryDef", "true")
                 .appendQueryParameter("api_key", BuildConfig.API_KEY)
                 .build();
 
-        List<String> words = new ArrayList<String>();
+        List<String> words = new ArrayList<>();
         try {
+            //TODO: Esta funcion puede devolver null y no se está controlando
             String info = downloadUrl(builtURI.toString());
 
             JSONArray data = new JSONArray(info);
@@ -96,7 +100,7 @@ public class DictionaryService {
      * @param word the word to search
      * @return frequency of given word
      */
-    public static int getFrequency(String word) {
+    /*public static int getFrequency(String word) {
         Uri builtURI = Uri.parse(BASE_URL+"word.json/").buildUpon()
                 .appendPath(word)
                 .appendEncodedPath("frequency")
@@ -120,7 +124,7 @@ public class DictionaryService {
         Log.d(DEBUG_TAG, "The frequency is: " + frequency);
 
         return frequency;
-    }
+    }*/
 
     /**
      * Obtains the URL of an audio with the pronunciation of a given word

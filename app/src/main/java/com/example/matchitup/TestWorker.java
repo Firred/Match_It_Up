@@ -12,7 +12,12 @@ public class TestWorker extends AsyncTask {
              * Se pueden poner múltiples funciones consecutivas.
              * Las funciones tienen que tener un Log que muestre por consola el resultado.
              */
+            /*DictionaryService.getRandomWords(5);
             DictionaryService.getFrequency("house");
+            DictionaryService.getAudio("house");
+            DictionaryService.getExamples("house", 5);
+            DictionaryService.getDefinition("house");*/
+
         } catch (Exception e) {
             Exception exception = e;
 

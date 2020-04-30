@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameActivity">
+    tools:context=".game.GameActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/juegoText"
         android:layout_width="107dp"
         android:layout_height="54dp"
         android:text="Juego"
