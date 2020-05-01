@@ -75,18 +75,22 @@ public class DictionaryService {
 
         List<String> words = new ArrayList<>();
         try {
-            //TODO: Esta funcion puede devolver null y no se está controlando
             String info = downloadUrl(builtURI.toString());
 
-            JSONArray data = new JSONArray(info);
+            if (info != null) {
+                JSONArray data = new JSONArray(info);
 
-            for (int i = 0; i < data.length(); i++) {
-                JSONObject wordJson = data.getJSONObject(i);
-                if (wordJson.has("word")) {
-                    String word = wordJson.getString("word");
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject wordJson = data.getJSONObject(i);
+                    if (wordJson.has("word")) {
+                        String word = wordJson.getString("word");
 
-                    words.add(word);
+                        words.add(word);
+                    }
                 }
+            }
+            else {
+                return null;
             }
         } catch (IOException | JSONException e) {
             System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
@@ -144,17 +148,18 @@ public class DictionaryService {
             String info = downloadUrl(builtURI.toString());
             boolean found = false;
 
-            JSONArray data = new JSONArray(info);
+            if(info != null) {
+                JSONArray data = new JSONArray(info);
 
-            for (int i = 0; i < data.length() && !found; i++) {
-                JSONObject audioJson = data.getJSONObject(i);
+                for (int i = 0; i < data.length() && !found; i++) {
+                    JSONObject audioJson = data.getJSONObject(i);
 
-                if (audioJson.has("fileUrl")) {
-                    audio = audioJson.getString("fileUrl");
-                    found = true;
+                    if (audioJson.has("fileUrl")) {
+                        audio = audioJson.getString("fileUrl");
+                        found = true;
+                    }
                 }
             }
-
         } catch (IOException | JSONException e) {
             System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
         }
@@ -185,18 +190,20 @@ public class DictionaryService {
         try {
             String info = downloadUrl(builtURI.toString());
 
-            JSONObject data = new JSONObject(info);
+            if(info != null) {
+                JSONObject data = new JSONObject(info);
 
-            if (data.has("examples")) {
-                JSONArray itemsArray = (JSONArray) data.get("examples");
+                if (data.has("examples")) {
+                    JSONArray itemsArray = (JSONArray) data.get("examples");
 
-                for (int i = 0; i < itemsArray.length(); i++) {
-                    JSONObject json = itemsArray.getJSONObject(i);
+                    for (int i = 0; i < itemsArray.length(); i++) {
+                        JSONObject json = itemsArray.getJSONObject(i);
 
-                    if (json.has("text")) {
-                        example = json.getString("text");
+                        if (json.has("text")) {
+                            example = json.getString("text");
 
-                        examples.add(example);
+                            examples.add(example);
+                        }
                     }
                 }
             }
