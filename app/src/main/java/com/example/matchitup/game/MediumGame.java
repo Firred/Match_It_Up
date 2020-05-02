@@ -11,11 +11,12 @@ public class MediumGame extends Game {
         super(record);
     }
 
+    /*
     @Override
     protected List<String> getWords() {
         return DictionaryService.getRandomWords(4, 5000, 12000);
     }
-
+*/
     @Override
     protected boolean saveRecord(int record) {
         return false;

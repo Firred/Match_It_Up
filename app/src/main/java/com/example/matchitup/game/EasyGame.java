@@ -11,11 +11,12 @@ public class EasyGame extends Game {
         super(record);
     }
 
+    /*
     @Override
     protected List<String> getWords() {
         return DictionaryService.getRandomWords(3, 12000, -1);
     }
-
+*/
 
     @Override
     protected boolean saveRecord(int record) {

@@ -12,10 +12,11 @@ public class HardGame extends Game {
     }
 
 
-    @Override
+/*    @Override
     protected List<String> getWords() {
         return DictionaryService.getRandomWords(5, 0, 5000);
     }
+*/
 
     @Override
     protected boolean saveRecord(int record) {
