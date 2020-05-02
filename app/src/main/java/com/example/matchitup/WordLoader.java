@@ -14,13 +14,13 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
     private Object paramQuery;
     private List<Integer> optionalParams;
 
-    public WordLoader(Context context, Object paramQuery) {
+    public WordLoader(Context context, String paramQuery) {
         super(context);
         this.paramQuery = paramQuery;
         this.optionalParams = null;
     }
 
-    public WordLoader(Context context, Object paramQuery, List<Integer> optionalParams) {
+    public WordLoader(Context context, Integer paramQuery, List<Integer> optionalParams) {
         super(context);
         this.paramQuery = paramQuery;
         this.optionalParams = optionalParams;
@@ -34,14 +34,7 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
         List<Word> data = new ArrayList<>();
         String def = DictionaryService.getDefinition(queryString);
         String audio = DictionaryService.getAudio(queryString);
-        List<String> examples = new ArrayList<>();
-
-        if (optionalParams != null && optionalParams.size() > 1) {
-            examples = DictionaryService.getExamples(queryString, optionalParams.get(0));
-        }
-        else {
-            Log.d("WordLoader; loadWord", "optionalParam is null or empty");
-        }
+        List<String> examples = DictionaryService.getExamples(queryString, 2);
 
         Word word = new Word(queryString, def, audio, examples);
 

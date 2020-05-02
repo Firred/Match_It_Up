@@ -18,6 +18,8 @@ public class TestWorker extends AsyncTask {
             DictionaryService.getExamples("house", 5);
             DictionaryService.getDefinition("house");*/
 
+
+            //DictionaryService.getRandomWords(5, 0, 5000);
         } catch (Exception e) {
             Exception exception = e;
 

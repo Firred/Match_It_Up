@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         handler.postDelayed(runnable, 2500);
 
-        /*//Pruebas, borrar
-        new TestWorker().execute();*/
+        //Pruebas, borrar
+        new TestWorker().execute();
     }
 
     private int convertDpToPx(int dp){

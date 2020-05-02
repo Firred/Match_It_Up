@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +23,7 @@ import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +31,7 @@ import java.util.Map;
 public class GameActivity extends AppCompatActivity {
     private final int WORD_LOADER_ID = 501;
 
-
+    private WordLoaderCallbacks wordLoaderCallbacks = new WordLoaderCallbacks();
     private Game game;
 
 
@@ -54,6 +58,15 @@ public class GameActivity extends AppCompatActivity {
         /**
          * AQUI ES DONDE SE EMPIEZA A UTILIZAR LAS LLAMADAS QUE NECESITAN EL BACKGROUND
          */
+        if(internetConnectionAvailable()) {
+            Bundle queryBundle = new Bundle();
+            queryBundle.putInt(WordLoaderCallbacks.PARAM_QUERY, 5);
+            //TODO: cambiar low y high por valores obtenidos a partir del Game
+            //queryBundle.putIntegerArrayList(WordLoaderCallbacks.OPTIONAL_PARAM, new ArrayList<Integer>(Arrays.asList(low, high)));
+            LoaderManager.getInstance(this).restartLoader(WORD_LOADER_ID, queryBundle, wordLoaderCallbacks);
+        }
+
+
         /*Map<String, String> words = game.generateWords();
 
         for (Map.Entry<String, String> entry : words.entrySet()) {
@@ -64,9 +77,18 @@ public class GameActivity extends AppCompatActivity {
         //YoYo.with(Techniques.ZoomIn).duration(700).repeat(5).playOn(findViewById(R.id.));*/
     }
 
+    private boolean internetConnectionAvailable(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = null;
+        if (connMgr != null) {
+            activeNetwork = connMgr.getActiveNetworkInfo();
+        }
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+
     /**
-     * La idea es pasar las palabras al activity con esta función para luego
-     * pasarlas al Game (cómo? Ni zorra).
+     * Used to pass the new words to the Game
+     * @param words the new list of words
      */
     private void getRandomWords(List<Word> words) {
         game.updateWords(words);
