@@ -2,16 +2,25 @@
 <resources>
     <color name="colorPrimary">#C9F182</color>
     <color name="colorPrimaryDark">#608D11</color>
+    <color name="gradStart">#87D105</color>
+    <color name="gradStop">#8FD14E</color>
+    <color name="verdeClaro">#ECF1BC</color>
+
     <color name="colorAccent">#252723</color>
+
+    <color name="naranjaMuyOscuro">#F37414</color>
     <color name="naranjaOscuro">#F8832B</color>
     <color name="naranja">#F89A39</color>
     <color name="naranjaClaro">#FABE50</color>
-    <color name="verdeClaro">#ECF1BC</color>
+
+    <color name="rojoOscuro">#E02D0D</color>
+    <color name="rojo">#DF3719</color>
+    <color name="rojoClaro">#F9583C</color>
+
 
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
-    <color name="gradStart">#87D105</color>
-    <color name="gradStop">#8FD14E</color>
+
 
     <color name="slideColor">#5E81A646</color>
 

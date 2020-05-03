@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Match It Up!</string>
+    <string name="next_game">Suivant</string>
+    <string name="points">Points :</string>
+    <string name="success_matchup">Correct !</string>
+    <string name="description_dictionary_menu">Vérifiez les mots dont vous avez douté et apprenez-les de manière plus traditionnelle.</string>
+    <string name="description_profile_menu">Trouvez les meilleurs scores que vous avez obtenus dans tous les niveaux joués et changez la langue de la demande pour une autre.</string>
+    <string name="description_play_menu">Commencez à jouer et essayez de faire correspondre autant de mots que possible avec leur signification. Plus vous faites correspondre de mots, plus le score est élevé.</string>
+    <string name="play_menu">JOUER</string>
+    <string name="profile_menu">PROFIL</string>
+    <string name="dictionary_menu">DICTIONNAIRE</string>
+    <string name="level_easy">Facile</string>
+    <string name="level_medium">Moyen</string>
+    <string name="level_hard">Difficile</string>
+    <string name="error_matchup">Erreur !</string>
+    <string name="loading">Chargeant . . .</string>
+</resources>

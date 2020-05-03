@@ -1,17 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".game.GameActivity">
+    android:background="@drawable/grad_bg_game_normal"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/gradient_menu_game_normal"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_weight="2"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/bungee"/>
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/points"
+            android:textAlignment="viewEnd"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_weight="2"
+            android:textSize="17sp"
+            android:fontFamily="@font/bungee"
+            tools:ignore="RtlCompat" />
+        <TextView
+            android:id="@+id/pointsNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:fontFamily="@font/bungee"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/juegoText"
-        android:layout_width="107dp"
-        android:layout_height="54dp"
-        android:text="Juego"
-        android:textSize="36sp"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="302dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/gradient_menu_game_normal_inverse"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gameState"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="@string/success_matchup"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/bungee"/>
+
+        <RelativeLayout
+            android:id="@+id/nextBtnLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:visibility="gone">
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="110dp"
+                android:layout_height="60dp"
+                android:text="@string/next_game"
+                android:fontFamily="@font/bungee"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:background="@drawable/popup_border"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

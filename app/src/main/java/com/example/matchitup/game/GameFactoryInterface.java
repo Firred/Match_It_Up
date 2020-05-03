@@ -2,8 +2,8 @@ package com.example.matchitup.game;
 
 public interface GameFactoryInterface {
 
-    Game easyGame(int record);
-    Game mediumGame(int record);
-    Game hardGame(int record);
+    Game easyGame(String gameModeString, int record);
+    Game mediumGame(String gameModeString, int record);
+    Game hardGame(String gameModeString, int record);
 
 }

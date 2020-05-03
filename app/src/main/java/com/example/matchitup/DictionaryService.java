@@ -41,14 +41,14 @@ public class DictionaryService {
             conn = (HttpURLConnection) url.openConnection();
             conn.connect();
             int response = conn.getResponseCode();
+            Log.d(DEBUG_TAG, "The request is: " + myurl);
+            Log.d(DEBUG_TAG, "The code response is: " + response);
             if(response == 200){
-                Log.d(DEBUG_TAG, "The code response is: " + response);
                 responseBody = conn.getInputStream();
                 String contentAsString = convertInputToString(responseBody);
-                Log.d(DEBUG_TAG, "The string is: " + contentAsString);
                 return contentAsString;
             } else{
-                return null;
+                return null; //Too Many Requests o Not Found
             }
             // Close the InputStream and connection
         } finally {
@@ -84,51 +84,17 @@ public class DictionaryService {
                     JSONObject wordJson = data.getJSONObject(i);
                     if (wordJson.has("word")) {
                         String word = wordJson.getString("word");
-
                         words.add(word);
                     }
                 }
-            }
-            else {
-                return null;
+            } else{
+                return null; // Ha habido un problema con la petición
             }
         } catch (IOException | JSONException e) {
             System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
         }
-        Log.d(DEBUG_TAG, "The words are: " + words);
         return words;
     }
-
-    /**
-     * Obtains the total number of uses of a given word
-     * @param word the word to search
-     * @return frequency of given word
-     */
-    /*public static int getFrequency(String word) {
-        Uri builtURI = Uri.parse(BASE_URL+"word.json/").buildUpon()
-                .appendPath(word)
-                .appendEncodedPath("frequency")
-                .appendQueryParameter("api_key", BuildConfig.API_KEY)
-                .build();
-
-        int frequency = 0;
-
-        try {
-            String info = downloadUrl(builtURI.toString());
-
-            JSONObject data = new JSONObject(info);
-
-            if (data.has("totalCount")) {
-                frequency = data.getInt("totalCount");
-            }
-
-        } catch (IOException | JSONException e) {
-            System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
-        }
-        Log.d(DEBUG_TAG, "The frequency is: " + frequency);
-
-        return frequency;
-    }*/
 
     /**
      * Obtains the URL of an audio with the pronunciation of a given word
@@ -147,7 +113,6 @@ public class DictionaryService {
         try {
             String info = downloadUrl(builtURI.toString());
             boolean found = false;
-
             if(info != null) {
                 JSONArray data = new JSONArray(info);
 
@@ -159,12 +124,12 @@ public class DictionaryService {
                         found = true;
                     }
                 }
+            } else{
+                return null; // Ha habido un problema con la petición
             }
         } catch (IOException | JSONException e) {
             System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
         }
-        Log.d(DEBUG_TAG, "The audio is: " + audio);
-
         return audio;
     }
 
@@ -183,19 +148,15 @@ public class DictionaryService {
                 .appendQueryParameter("api_key", BuildConfig.API_KEY)
                 .build();
 
-        List<String> examples = new ArrayList<String>();
-        String example;
-
-
+        List<String> examples = new ArrayList<>();
+        String example = "";
         try {
             String info = downloadUrl(builtURI.toString());
 
             if(info != null) {
                 JSONObject data = new JSONObject(info);
-
                 if (data.has("examples")) {
                     JSONArray itemsArray = (JSONArray) data.get("examples");
-
                     for (int i = 0; i < itemsArray.length(); i++) {
                         JSONObject json = itemsArray.getJSONObject(i);
 
@@ -206,13 +167,12 @@ public class DictionaryService {
                         }
                     }
                 }
+            } else {
+                return null; // Ha habido un problema con la petición
             }
         } catch (IOException | JSONException e) {
             System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
         }
-
-        Log.d(DEBUG_TAG, "The examples are: " + examples);
-
         return examples;
     }
 
@@ -231,27 +191,26 @@ public class DictionaryService {
                 .build();
 
         String definition = "";
-
         try {
             String info = downloadUrl(builtURI.toString());
 
-            boolean found = false;
+            if(info != null) {
+                boolean found = false;
+                JSONArray data = new JSONArray(info);
+                for (int i = 0; i < data.length() && !found; i++) {
+                    JSONObject audioJson = data.getJSONObject(i);
 
-            JSONArray data = new JSONArray(info);
-
-            for (int i = 0; i < data.length() && !found; i++) {
-                JSONObject audioJson = data.getJSONObject(i);
-
-                if (audioJson.has("text")) {
-                    definition = audioJson.getString("text");
-                    found = true;
+                    if (audioJson.has("text")) {
+                        definition = audioJson.getString("text");
+                        found = true;
+                    }
                 }
+            } else {
+                return null; // Ha habido un problema con la petición
             }
-
         } catch (IOException | JSONException e) {
             System.out.println("Ha habido un error en DictionaryService: " + e.getMessage());
         }
-        Log.d(DEBUG_TAG, "The definitions are: " + definition);
 
         return definition;
     }

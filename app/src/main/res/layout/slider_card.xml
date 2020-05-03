@@ -38,9 +38,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bungee"
                 android:paddingTop="20dp"
-                android:text="JUGAR"
+                android:text="@string/play_menu"
                 android:textColor="@color/colorAccent"
-                android:textSize="32dp" />
+                android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/slide_description"
@@ -48,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:padding="25dp"
-                android:text="Descripcion"
+                android:text="@string/description_play_menu"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
 
         </LinearLayout>

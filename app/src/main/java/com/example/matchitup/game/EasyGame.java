@@ -7,8 +7,8 @@ import java.util.List;
 
 public class EasyGame extends Game {
 
-    public EasyGame(int record) {
-        super(record);
+    public EasyGame(String gameModeString, int record, int limitWords, int lowFrecuency, int highFrecuency) {
+        super(gameModeString, record, limitWords, lowFrecuency, highFrecuency);
     }
 
     /*

@@ -10,30 +10,30 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.transition.TransitionManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.matchitup.Constants;
 import com.example.matchitup.R;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements Observer {
     private final int WORD_LOADER_ID = 501;
 
     private WordLoaderCallbacks wordLoaderCallbacks = new WordLoaderCallbacks();
     private Game game;
-
+    private TextView level, points, pointsString, gameState;
+    private Button nextBtn;
+    private RelativeLayout nextBtnLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,37 +41,46 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         GameFactory games = new GameFactory();
 
+        /* Cargamos los elementos de la vista que deben modificarse luego*/
+        level = findViewById(R.id.level);
+        points = findViewById(R.id.pointsNumber);
+        pointsString = findViewById(R.id.points);
+        gameState = findViewById(R.id.gameState);
+        nextBtn = findViewById(R.id.nextBtn);
+        nextBtnLayout = findViewById(R.id.nextBtnLayout);
+        pointsString.setText("");
+
+
+        LoaderManager loaderManager = LoaderManager.getInstance(this);
+        if(loaderManager.getLoader(WORD_LOADER_ID) != null){
+            loaderManager.initLoader(WORD_LOADER_ID, null, wordLoaderCallbacks);
+        }
+
         //Recogemos el tipo de juego
         Intent intent = getIntent();
-        String gameMode = intent.getStringExtra(Constants.START_GAME);
+        int gameMode = intent.getIntExtra("start_game", 0);
 
-        /**
-         * EL RECORD DE ESTAS LLAMADAS DEPENDE DE LO QUE TENGA GUARDADO EL USUARIO
-         */
+        // TODO: EL RECORD DEPENDE DE LO QUE TENGA GUARDADO EL USUARIO
         switch(gameMode){
-            case "Facil": game = games.easyGame(5); break;
-            case "Medio": game = games.mediumGame(5); break;
-            case "Dificil": game = games.hardGame(5); break;
+            case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy) ,5); break;
+            case R.id.btnMedium: game = games.mediumGame(getString(R.string.level_medium), 5); break;
+            case R.id.btnHard: game = games.hardGame(getString(R.string.level_hard), 5); break;
         }
+        // Añadimos la clase como observer del modelo, para que cuando cambie efectue los cambios
+        game.addObserver(this);
 
-
-        /**
-         * AQUI ES DONDE SE EMPIEZA A UTILIZAR LAS LLAMADAS QUE NECESITAN EL BACKGROUND
-         */
-        if(internetConnectionAvailable()) {
+        /* Comenzamos el juego */
+        if (internetConnectionAvailable()) {
             Bundle queryBundle = new Bundle();
-            queryBundle.putInt(WordLoaderCallbacks.PARAM_QUERY, 5);
-            //TODO: cambiar low y high por valores obtenidos a partir del Game
-            //queryBundle.putIntegerArrayList(WordLoaderCallbacks.OPTIONAL_PARAM, new ArrayList<Integer>(Arrays.asList(low, high)));
+            queryBundle.putInt(WordLoaderCallbacks.PARAM_QUERY, game.getLimitWords());
+            queryBundle.putIntegerArrayList(WordLoaderCallbacks.OPTIONAL_PARAM,
+                    new ArrayList<Integer>(Arrays.asList(game.getLowFrecuency(), game.getHighFrecuency())));
             LoaderManager.getInstance(this).restartLoader(WORD_LOADER_ID, queryBundle, wordLoaderCallbacks);
+            gameState.setText(getString(R.string.loading));
+        } else {
+            // TODO: Mensaje de no hay conexion
         }
 
-
-        /*Map<String, String> words = game.generateWords();
-
-        for (Map.Entry<String, String> entry : words.entrySet()) {
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-        }
 
         //Realiza una animación en una vista
         //YoYo.with(Techniques.ZoomIn).duration(700).repeat(5).playOn(findViewById(R.id.));*/
@@ -86,12 +95,25 @@ public class GameActivity extends AppCompatActivity {
         return activeNetwork != null && activeNetwork.isConnected();
     }
 
-    /**
-     * Used to pass the new words to the Game
-     * @param words the new list of words
-     */
-    private void getRandomWords(List<Word> words) {
-        game.updateWords(words);
+    //TODO: Funcion de patron observer
+    @Override
+    public void update(Observable observable, Object arg) {
+        if (observable !=null && observable instanceof Game) {
+            Game game = (Game)observable;
+            pointsString.setText(getString(R.string.points));
+            points.setText(Integer.toString(game.getCurrentPoints()));
+            level.setText(game.getGameModeString());
+            gameState.setText("");
+            nextBtnLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /* remove observer at this point */
+        if(game != null)
+            game.deleteObserver(this);
     }
 
     private class WordLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Word>>  {
@@ -119,16 +141,13 @@ public class GameActivity extends AppCompatActivity {
          */
         @Override
         public void onLoadFinished(@NonNull Loader<List<Word>> loader, List<Word> data) {
-
-            //TODO: Aquí habría que actualizar la interfaz que no tenemos
-            if (data!= null) {
-                getRandomWords(data);
+            if (data != null) {
+                game.updateWords(data);
             }
             else {
-                getRandomWords(new ArrayList<Word>());
+                game.updateWords(new ArrayList<Word>());
             }
         }
-
 
         /**
          * Cuando un Loader previamente creado se está resetando. En este punto la app debería eliminar

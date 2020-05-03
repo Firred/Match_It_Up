@@ -1,15 +1,16 @@
 package com.example.matchitup;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public class Word {
     private String word, def, audio;
     private List<String> examples;
 
-    public Word(String word, String def, String audio) {
+    public Word(String word, String def) {
         this.word = word;
         this.def = def;
-        this.audio = audio;
     }
 
     public Word(String word, String def, String audio, List<String> examples) {
@@ -33,5 +34,11 @@ public class Word {
 
     public List<String> getExamples() {
         return examples;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return word + ": " + def;
     }
 }

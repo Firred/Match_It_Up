@@ -22,15 +22,15 @@
             android:background="@drawable/button_radius"
             android:fontFamily="@font/bungee"
             android:onClick="onPlayModePressed"
-            android:text="Facil"
+            android:text="@string/level_easy"
             android:textColor="@color/colorAccent"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
         <Button
             android:id="@+id/btnMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Medio"
-            android:textSize="20dp"
+            android:text="@string/level_medium"
+            android:textSize="20sp"
             android:textColor="@color/colorAccent"
             android:fontFamily="@font/bungee"
             android:layout_weight="0.30"
@@ -49,9 +49,9 @@
             android:background="@drawable/button_radius"
             android:fontFamily="@font/bungee"
             android:onClick="onPlayModePressed"
-            android:text="Dificil"
+            android:text="@string/level_hard"
             android:textColor="@color/colorAccent"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -35,8 +36,10 @@ import com.example.matchitup.game.Game;
 import com.example.matchitup.game.GameActivity;
 import com.example.matchitup.game.GameFactory;
 
+
 public class MainActivity extends AppCompatActivity {
 
+    public static final String START_GAME = "start_game";
     private ViewPager mSlideViewPager;
     private ImageView logo;
     private SliderAdapter sliderAdapter;
@@ -67,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         handler.postDelayed(runnable, 2500);
 
-        //Pruebas, borrar
-        new TestWorker().execute();
+        /*//Pruebas, borrar
+        new TestWorker().execute();*/
     }
 
     private int convertDpToPx(int dp){
@@ -94,14 +97,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void onPlayModePressed(View v){
         Button btnPressed = (Button) v;
-        String buttonText = btnPressed.getText().toString();
+        int buttonText = btnPressed.getId();
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(Constants.START_GAME, buttonText);
+        intent.putExtra(START_GAME, buttonText);
         startActivity(intent);
     }
 
     /*Clase que permite crear el menu con distintas pantallas*/
     private class SliderAdapter extends PagerAdapter {
+
+        public final int[] SLIDE_IMAGES = {
+                R.drawable.jugar,
+                R.drawable.dict,
+                R.drawable.perfil
+        };
+
+        public final Class[] SLIDE_CLASSES = {
+                GameActivity.class,
+                DictionaryActivity.class,
+                ProfileActivity.class
+        };
+
+        public final String[] SLIDE_TITLES = {
+                getString(R.string.play_menu),
+                getString(R.string.dictionary_menu),
+                getString(R.string.profile_menu)
+        };
+
+        public final String[] SLIDE_DESCRIPTIONS = {
+                getString(R.string.description_play_menu),
+                getString(R.string.description_dictionary_menu),
+                getString(R.string.description_profile_menu)
+        };
+
+
         private Context context;
         private LayoutInflater layoutInflater;
 
@@ -112,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return Constants.SLIDE_TITLES.length;
+            return SLIDE_TITLES.length;
         }
 
         @Override
@@ -129,14 +158,14 @@ public class MainActivity extends AppCompatActivity {
             TextView slideTitle = (TextView) view.findViewById(R.id.slide_title);
             TextView slideDescription = (TextView) view.findViewById(R.id.slide_description);
 
-            slideLogo.setImageResource(Constants.SLIDE_IMAGES[position]);
-            slideTitle.setText(Constants.SLIDE_TITLES[position]);
-            slideDescription.setText(Constants.SLIDE_DESCRIPTIONS[position]);
+            slideLogo.setImageResource(SLIDE_IMAGES[position]);
+            slideTitle.setText(SLIDE_TITLES[position]);
+            slideDescription.setText(SLIDE_DESCRIPTIONS[position]);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, (Class<?>) Constants.SLIDE_CLASSES[position]);
+                    Intent intent = new Intent(context, (Class<?>) SLIDE_CLASSES[position]);
                     switch(position){
                         // Jugar
                         case 0:

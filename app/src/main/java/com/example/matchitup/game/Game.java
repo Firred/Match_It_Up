@@ -11,36 +11,43 @@ import java.util.Observable;
 
 public abstract class Game extends Observable {
 
-    private int record, currentPoints;
-    private Map<String, String> word_definition;
+    private int record, currentPoints, lowFrecuency, highFrecuency, limitWords;
+    private Map<String, String> wordMap;
+    private String gameModeString;
 
-    private Map<String, Word> wordMap;
-
-    public Game(int record) {
+    public Game(String gameModeString, int record, int limitWords, int lowFrecuency, int highFrecuency) {
+        this.gameModeString = gameModeString;
         this.record = record;
+        this.limitWords = limitWords;
+        this.lowFrecuency = lowFrecuency;
+        this.highFrecuency = highFrecuency;
         this.currentPoints = 0;
-        this.word_definition = new HashMap<>();
     }
 
-
-    protected Map<String, String> generateWords(){
-        List<String> words = getWords();
-        List<String> definitions = getDefinitions(words);
-        word_definition.clear();
-
-        for(int i = 0; i < words.size(); i++){
-            word_definition.put(words.get(i), definitions.get(i));
-        }
-        return word_definition;
+    public int getLowFrecuency() {
+        return lowFrecuency;
     }
 
-    private List<String> getDefinitions(List<String> words){
+    public int getHighFrecuency() {
+        return highFrecuency;
+    }
+
+    public int getLimitWords() {
+        return limitWords;
+    }
+
+    public int getCurrentPoints() { return currentPoints; }
+
+    public String getGameModeString() { return gameModeString; }
+
+    /*private List<String> getDefinitions(List<String> words){
         ArrayList<String> definitions = new ArrayList<>();
         for (String w: words){
             definitions.add(DictionaryService.getDefinition(w));
         }
         return definitions;
-    };
+    };*/
+
 
     /**
      * Updates the list of words and definitions of the game.
@@ -48,10 +55,11 @@ public abstract class Game extends Observable {
      */
     void updateWords(List<Word> words) {
         wordMap = new HashMap<>();
-
         for(Word w : words) {
-            wordMap.put(w.getWord(), w);
+            wordMap.put(w.getWord(), w.getDef());
         }
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -66,8 +74,8 @@ public abstract class Game extends Observable {
     private List<String> getDefinitions() {
         List<String> defs = new ArrayList<>();
 
-        for(Word w : wordMap.values()) {
-            defs.add(w.getDef());
+        for(String definition : wordMap.values()) {
+            defs.add(definition);
         }
 
         return defs;
@@ -83,12 +91,12 @@ public abstract class Game extends Observable {
     // También se podría devolver un Set<String> y así no hace falta crear el list,
     // pero solo se podría usar para recorrer el set, ya que no tiene un get(index).
     private List<String> getWords() {
+
         return new ArrayList<>(wordMap.keySet());
     }
 
 
-    
-    /*protected abstract List<String> getWords();*/
+
 
     /*TODO: Quizas se pueda hacer en un sitio de manera común si todos los juegos guardan la info en
       TODO: en el mismo sitio*/
