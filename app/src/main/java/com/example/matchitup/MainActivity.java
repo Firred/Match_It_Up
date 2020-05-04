@@ -15,8 +15,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.transition.TransitionManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -35,6 +37,8 @@ import com.eftimoff.viewpagertransformers.*;
 import com.example.matchitup.game.Game;
 import com.example.matchitup.game.GameActivity;
 import com.example.matchitup.game.GameFactory;
+
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LocaleManager.setLocale(this,
+                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                        .getString("language_key", Locale.getDefault().getLanguage()));
+        
         setContentView(R.layout.activity_main);
         popUpPlayMenu = new Dialog(this);
         mainLayout = findViewById(R.id.mainLayout);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading">Cargando . . .</string>
+    <string name="error_matchup">¡ Error !</string>
+    <string name="level_hard">Dificil</string>
+    <string name="level_medium">Medio</string>
+    <string name="dictionary_menu">DICCIONARIO</string>
+    <string name="level_easy">Facil</string>
+    <string name="profile_menu">PERFIL</string>
+    <string name="play_menu">JUGAR</string>
+    <string name="description_play_menu">Comienza a jugar e intenta emparejar el mayor número de palabras posibles con su significado. Cuantas más emparejes, mayor puntuación obtendrás.</string>
+    <string name="description_profile_menu">Encuentra las mejores puntuaciones que has conseguido en todos los niveles jugados y cambia el idioma de la aplicación por otro distinto.</string>
+    <string name="description_dictionary_menu">Consulta las palabras con las que hayas dudado y apréndelas de una manera más tradicional.</string>
+    <string name="success_matchup">¡ Correcto !</string>
+    <string name="points">"Puntos : "</string>
+    <string name="next_game">Siguiente</string>
+</resources>
