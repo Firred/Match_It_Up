@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         /*//Pruebas, borrar
         new TestWorker().execute();*/
+        //Realiza una animación del logo
+        YoYo.with(Techniques.Landing).duration(1700).repeat(0).playOn(findViewById(R.id.logo));
     }
 
     private int convertDpToPx(int dp){
