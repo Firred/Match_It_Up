@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.viewpager.widget.ViewPager;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.eftimoff.viewpagertransformers.ZoomOutSlideTransformer;
+import com.example.matchitup.MainActivity;
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
@@ -34,40 +37,30 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private TextView level, points, pointsString, gameState;
     private Button nextBtn;
     private RelativeLayout nextBtnLayout;
+    private ViewPager gameViewPager;
+    private GameViewPagerAdapter gameViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        GameFactory games = new GameFactory();
-
-        /* Cargamos los elementos de la vista que deben modificarse luego*/
-        level = findViewById(R.id.level);
-        points = findViewById(R.id.pointsNumber);
-        pointsString = findViewById(R.id.points);
-        gameState = findViewById(R.id.gameState);
-        nextBtn = findViewById(R.id.nextBtn);
-        nextBtnLayout = findViewById(R.id.nextBtnLayout);
-        pointsString.setText("");
-
-
-        LoaderManager loaderManager = LoaderManager.getInstance(this);
-        if(loaderManager.getLoader(WORD_LOADER_ID) != null){
-            loaderManager.initLoader(WORD_LOADER_ID, null, wordLoaderCallbacks);
-        }
-
         //Recogemos el tipo de juego
         Intent intent = getIntent();
         int gameMode = intent.getIntExtra("start_game", 0);
 
+        GameFactory games = new GameFactory();
         // TODO: EL RECORD DEPENDE DE LO QUE TENGA GUARDADO EL USUARIO
         switch(gameMode){
             case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy) ,5); break;
             case R.id.btnMedium: game = games.mediumGame(getString(R.string.level_medium), 5); break;
             case R.id.btnHard: game = games.hardGame(getString(R.string.level_hard), 5); break;
         }
-        // Añadimos la clase como observer del modelo, para que cuando cambie efectue los cambios
+
+        initializeViews();
+
+        // Añadimos las clase como observer del modelo, para que cuando cambie efectue los cambios
         game.addObserver(this);
+        game.addObserver(gameViewPagerAdapter);
 
         /* Comenzamos el juego */
         if (internetConnectionAvailable()) {
@@ -80,10 +73,25 @@ public class GameActivity extends AppCompatActivity implements Observer {
         } else {
             // TODO: Mensaje de no hay conexion
         }
+    }
 
+    private void initializeViews(){
+        gameViewPager = findViewById(R.id.viewPagerGame);
+        //gameViewPager.setPageTransformer(true, new ZoomOutSlideTransformer());
+        gameViewPagerAdapter = new GameViewPagerAdapter(this);
+        level = findViewById(R.id.level);
+        points = findViewById(R.id.pointsNumber);
+        pointsString = findViewById(R.id.points);
+        gameState = findViewById(R.id.gameState);
+        nextBtn = findViewById(R.id.nextBtn);
+        nextBtnLayout = findViewById(R.id.nextBtnLayout);
+        pointsString.setText("");
 
-        //Realiza una animación en una vista
-        //YoYo.with(Techniques.ZoomIn).duration(700).repeat(5).playOn(findViewById(R.id.));*/
+        LoaderManager loaderManager = LoaderManager.getInstance(this);
+        if(loaderManager.getLoader(WORD_LOADER_ID) != null){
+            loaderManager.initLoader(WORD_LOADER_ID, null, wordLoaderCallbacks);
+        }
+
     }
 
     private boolean internetConnectionAvailable(){
@@ -98,13 +106,16 @@ public class GameActivity extends AppCompatActivity implements Observer {
     //TODO: Funcion de patron observer
     @Override
     public void update(Observable observable, Object arg) {
-        if (observable !=null && observable instanceof Game) {
+        if (observable != null && observable instanceof Game) {
             Game game = (Game)observable;
             pointsString.setText(getString(R.string.points));
             points.setText(Integer.toString(game.getCurrentPoints()));
             level.setText(game.getGameModeString());
             gameState.setText("");
             nextBtnLayout.setVisibility(View.VISIBLE);
+
+            /* Se crea el viewPager despues de haber generado las palabras, para que se puedan asignar*/
+            gameViewPager.setAdapter(gameViewPagerAdapter);
         }
     }
 
@@ -112,8 +123,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
     protected void onDestroy() {
         super.onDestroy();
         /* remove observer at this point */
-        if(game != null)
+        if(game != null) {
             game.deleteObserver(this);
+        }
     }
 
     private class WordLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Word>>  {

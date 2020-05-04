@@ -40,6 +40,11 @@ public abstract class Game extends Observable {
 
     public String getGameModeString() { return gameModeString; }
 
+    public Map<String, String> getWordMap() {
+        return wordMap;
+    }
+
+
     /*private List<String> getDefinitions(List<String> words){
         ArrayList<String> definitions = new ArrayList<>();
         for (String w: words){

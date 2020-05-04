@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView logo;
     private SliderAdapter sliderAdapter;
     private RelativeLayout slidesLayout, mainLayout;
-    private SharedPreferences infoUsuario;
     private Dialog popUpPlayMenu;
     private Handler handler;
     private Runnable runnable = new Runnable() {
@@ -59,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         popUpPlayMenu = new Dialog(this);
-        mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
-        slidesLayout = (RelativeLayout) findViewById(R.id.slidesLayout);
-        logo = (ImageView) findViewById(R.id.logo);
-        mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
+        mainLayout = findViewById(R.id.mainLayout);
+        slidesLayout = findViewById(R.id.slidesLayout);
+        logo = findViewById(R.id.logo);
+        mSlideViewPager = findViewById(R.id.slideViewPager);
         sliderAdapter = new SliderAdapter(this);
         mSlideViewPager.setAdapter(sliderAdapter);
         mSlideViewPager.setPageTransformer(true, new ZoomOutSlideTransformer());
@@ -72,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*//Pruebas, borrar
         new TestWorker().execute();*/
+
         //Realiza una animación del logo
         YoYo.with(Techniques.Landing).duration(1700).repeat(0).playOn(findViewById(R.id.logo));
     }
