@@ -3,6 +3,7 @@ package com.example.matchitup.game;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.example.matchitup.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -86,11 +88,15 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         words = words.shuffle();*/
 
         // TODO: Lo suyo sería reordenar el mapa o coger los elementos de forma random
-
+        List shuffled;
         if(position == WORDS_VIEW){
-            prepareButtons(buttons, word_definition.keySet(), position);
+            shuffled = new ArrayList<String>(word_definition.keySet());
+            Collections.shuffle(shuffled);
+            prepareButtons(buttons, shuffled, position);
         } else if (position == DEFINITIONS_VIEW){
-            prepareButtons(buttons, word_definition.values(), position);
+            shuffled = new ArrayList<String>(word_definition.values());
+            Collections.shuffle(shuffled);
+            prepareButtons(buttons, shuffled, position);
         }
 
         container.addView(view);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordLoader extends AsyncTaskLoader<List<Word>> {
-
+    public static final int WORD_LOADER_ID = 501;
     private Object paramQuery;
     private List<Integer> optionalParams;
 
@@ -55,6 +55,8 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
 
         data.add(word);
 
+        Log.d("loadWord0", data.get(0).getAudio());
+        Log.d("loadWord", "Word Loaded: " + data.get(0).toString());
         return data;
     }
 
