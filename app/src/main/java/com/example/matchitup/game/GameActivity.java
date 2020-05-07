@@ -242,7 +242,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
             }
             //Inicia la animación
             handler = new Handler();
-            handler.postDelayed(runnable, 1500);
+            handler.postDelayed(runnable, 2300);
         }
     }
 
