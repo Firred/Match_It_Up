@@ -14,4 +14,5 @@
     <string name="success_matchup">¡ Correcto !</string>
     <string name="points">"Puntos : "</string>
     <string name="next_game">Siguiente</string>
+    <string name="record">"Record : "</string>
 </resources>

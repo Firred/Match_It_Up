@@ -16,18 +16,24 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
 
 
     /**
-     * String word: Se refiere a la palabra que quieras buscar para el menu del diccionario
-     * */
+     * First constructor for WordLoader object. Mostly used for dictionary's functionality
+     * @param context Application context
+     * @param word Word that need to be searched.
+     */
     public WordLoader(Context context, String word) {
         super(context);
         this.paramQuery = word;
         this.optionalParams = null;
     }
 
+
     /**
-    * Integer randomLimit: Se refiere al número de palabras aleatorias que quieras buscar para el juego
-     * OptionalParams: Hace referencia a la frecuencia de uso de las palabras que se quieran buscar (Relacionado con el modo de juego)
-    * */
+     * Second constructor for WordLoader object. Mostly used for game's functionality
+     * @param context Application context
+     * @param randomLimit Number of random words which need to be generated for the game
+     * @param optionalParams List of integers which represent the range of use frecuency of the words
+     *                       to be generated
+     */
     public WordLoader(Context context, Integer randomLimit, List<Integer> optionalParams) {
         super(context);
         this.paramQuery = randomLimit;

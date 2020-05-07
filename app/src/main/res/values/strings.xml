@@ -14,4 +14,5 @@
     <string name="description_play_menu">Comienza a jugar e intenta emparejar el mayor número de palabras posibles con su significado. Cuantas más emparejes, mayor puntuación obtendrás.</string>
     <string name="error_matchup">¡ Error !</string>
     <string name="loading">Cargando . . .</string>
+    <string name="record">"Record : "</string>
 </resources>

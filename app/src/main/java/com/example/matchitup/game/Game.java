@@ -13,7 +13,8 @@ public abstract class Game extends Observable {
 
     private int record, currentPoints, lowFrecuency, highFrecuency, limitWords;
     private Map<String, String> wordMap;
-    private String gameModeString;
+    private String gameModeString, chosenWord, chosenDefinition;
+    private boolean checkedWord, checkedDefinition, roundFinished;
 
     public Game(String gameModeString, int record, int limitWords, int lowFrecuency, int highFrecuency) {
         this.gameModeString = gameModeString;
@@ -21,7 +22,12 @@ public abstract class Game extends Observable {
         this.limitWords = limitWords;
         this.lowFrecuency = lowFrecuency;
         this.highFrecuency = highFrecuency;
+        this.checkedWord = false;
+        this.checkedDefinition = false;
+        this.roundFinished = true;
         this.currentPoints = 0;
+        this.chosenWord = "";
+        this.chosenDefinition = "";
     }
 
     public int getLowFrecuency() {
@@ -40,8 +46,52 @@ public abstract class Game extends Observable {
 
     public String getGameModeString() { return gameModeString; }
 
-    public Map<String, String> getWordMap() {
-        return wordMap;
+    public String getChosenWord() { return chosenWord; }
+
+    public String getChosenDefinition() { return chosenDefinition; }
+
+    public boolean isCheckedWord() { return checkedWord; }
+
+    public boolean isCheckedDefinition() { return checkedDefinition; }
+
+    public Map<String, String> getWordMap() { return wordMap; }
+
+    public void setCurrentPoints(int currentPoints) {
+        this.currentPoints = currentPoints;
+        if(this.currentPoints <= 0){
+            this.currentPoints = 0;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    public void setChosenWord(String chosenWord) { this.chosenWord = chosenWord; }
+
+    public void setChosenDefinition(String chosenDefinition) { this.chosenDefinition = chosenDefinition; }
+
+    public void setCheckedWord(boolean pressedWord) { this.checkedWord = pressedWord; }
+
+    public void setCheckedDefinition(boolean pressedDefinition) { this.checkedDefinition = pressedDefinition; }
+
+    public boolean isRecord(){
+        return currentPoints > record;
+    }
+
+    public boolean isRoundFinished() {
+        return roundFinished;
+    }
+
+    public void setRoundFinished(boolean roundFinished) {
+        this.roundFinished = roundFinished;
+    }
+
+    public boolean pairSelected(){
+        return checkedWord && checkedDefinition;
+    }
+
+    public boolean correctPair(){
+        String realDefinition = wordMap.get(chosenWord);
+        return realDefinition.equals(chosenDefinition);
     }
 
 

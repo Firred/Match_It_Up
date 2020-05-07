@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -21,6 +23,7 @@ import com.example.matchitup.ProfileActivity;
 import com.example.matchitup.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -34,7 +37,6 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private Context context;
     private LayoutInflater layoutInflater;
     private Map<String, String> word_definition;
-    private int limitWords;
 
 
     public GameViewPagerAdapter(Context context){
@@ -51,18 +53,20 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         return view == (LinearLayout) object;
     }
 
-
     @Override
     public void update(Observable observable, Object arg) {
         Game game = (Game)observable;
         word_definition = game.getWordMap();
-        limitWords = game.getLimitWords();
     }
 
-    private void prepareButtons(List<Button> buttons){
+    private void prepareButtons(List<ToggleButton> buttons, Collection<String> infoToInsert, int position){
         int i = 0;
-        while(i < limitWords){
+        for(String info : infoToInsert) {
             buttons.get(i).setVisibility(View.VISIBLE);
+            buttons.get(i).setText(info);
+            buttons.get(i).setTextOn(info);
+            buttons.get(i).setTextOff(info);
+            buttons.get(i).setTag(position);
             i++;
         }
     }
@@ -71,55 +75,24 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     public Object instantiateItem(ViewGroup container, final int position){
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.game_views, container, false);
-        List<Button> buttons = new ArrayList<>();
-        buttons.add((Button) view.findViewById(R.id.button0));
-        buttons.add((Button) view.findViewById(R.id.button1));
-        buttons.add((Button) view.findViewById(R.id.button2));
-        buttons.add((Button) view.findViewById(R.id.button3));
-        buttons.add((Button) view.findViewById(R.id.button4));
+        List<ToggleButton> buttons = new ArrayList<>();
+        buttons.add((ToggleButton) view.findViewById(R.id.button0));
+        buttons.add((ToggleButton) view.findViewById(R.id.button1));
+        buttons.add((ToggleButton) view.findViewById(R.id.button2));
+        buttons.add((ToggleButton) view.findViewById(R.id.button3));
+        buttons.add((ToggleButton) view.findViewById(R.id.button4));
 
-        prepareButtons(buttons);
+        /*Collection words = word_definition.values();
+        words = words.shuffle();*/
 
-        // TODO: Esto quizá se pueda refactorizar
-        int i = 0;
+        // TODO: Lo suyo sería reordenar el mapa o coger los elementos de forma random
+
         if(position == WORDS_VIEW){
-            for(String word : word_definition.keySet()) {
-                buttons.get(i).setText(word);
-                i++;
-            }
-
+            prepareButtons(buttons, word_definition.keySet(), position);
         } else if (position == DEFINITIONS_VIEW){
-            for(String definition : word_definition.values()) {
-                buttons.get(i).setText(definition);
-                i++;
-            }
-
+            prepareButtons(buttons, word_definition.values(), position);
         }
 
-
-        /*ImageView slideLogo = (ImageView) view.findViewById(R.id.slide_logo);
-        TextView slideTitle = (TextView) view.findViewById(R.id.slide_title);
-        TextView slideDescription = (TextView) view.findViewById(R.id.slide_description);
-
-        slideLogo.setImageResource(SLIDE_IMAGES[position]);
-        slideTitle.setText(SLIDE_TITLES[position]);
-        slideDescription.setText(SLIDE_DESCRIPTIONS[position]);
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, (Class<?>) SLIDE_CLASSES[position]);
-                switch(position){
-                    // Jugar
-                    case 0:
-                        onPlayPressed();
-                        break;
-                    // Diccionario y perfil
-                    default:
-                        context.startActivity(intent);
-                }
-            }
-        });*/
         container.addView(view);
         return view;
     }

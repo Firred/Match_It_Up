@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/transparent">
+    app:cardBackgroundColor="@color/transparent"
+    tools:context="com.example.matchitup.game.GameActivity">
     <!-- A CardView that contains a TextView -->
 
     <androidx.cardview.widget.CardView
@@ -18,43 +20,84 @@
             android:layout_height="match_parent"
             android:baselineAligned="false"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="4dp">
 
 
-            <Button
+            <ToggleButton
                 android:id="@+id/button0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:visibility="gone"/>
+                android:layout_margin="7dp"
+                android:background="@drawable/toggle_buttons"
+                android:fontFamily="@font/raleway_semibold"
+                android:onClick="onClickToggleButtons"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:visibility="gone" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:visibility="gone"/>
+                android:layout_margin="7dp"
+                android:padding="8dp"
+                android:background="@drawable/toggle_buttons"
+                android:fontFamily="@font/raleway_semibold"
+                android:onClick="onClickToggleButtons"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:visibility="gone"
+                android:layout_weight="1"/>
 
-            <Button
+            <ToggleButton
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:visibility="gone"/>
+                android:layout_margin="7dp"
+                android:padding="8dp"
+                android:background="@drawable/toggle_buttons"
+                android:fontFamily="@font/raleway_semibold"
+                android:onClick="onClickToggleButtons"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:visibility="gone"
+                android:layout_weight="1"/>
 
-            <Button
+            <ToggleButton
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:onClick="onClickToggleButtons"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:textAllCaps="false"
+                android:layout_margin="7dp"
+                android:background="@drawable/toggle_buttons"
+                android:textColor="@color/white"
+                android:layout_weight="1"/>
 
-            <Button
+            <ToggleButton
                 android:id="@+id/button4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:onClick="onClickToggleButtons"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:textAllCaps="false"
+                android:layout_margin="7dp"
+                android:background="@drawable/toggle_buttons"
+                android:textColor="@color/white"
+                android:layout_weight="1"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

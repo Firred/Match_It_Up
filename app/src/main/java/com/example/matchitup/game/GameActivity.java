@@ -7,16 +7,22 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.eftimoff.viewpagertransformers.ZoomOutSlideTransformer;
 import com.example.matchitup.MainActivity;
 import com.example.matchitup.R;
@@ -31,6 +37,8 @@ import java.util.Observer;
 
 public class GameActivity extends AppCompatActivity implements Observer {
     private final int WORD_LOADER_ID = 501;
+    private static final int WORDS_VIEW = 0;
+    private static final int DEFINITIONS_VIEW = 1;
 
     private WordLoaderCallbacks wordLoaderCallbacks = new WordLoaderCallbacks();
     private Game game;
@@ -40,11 +48,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private ViewPager gameViewPager;
     private GameViewPagerAdapter gameViewPagerAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        //Recogemos el tipo de juego
+
         Intent intent = getIntent();
         int gameMode = intent.getIntExtra("start_game", 0);
 
@@ -58,9 +67,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
         initializeViews();
 
-        // Añadimos las clase como observer del modelo, para que cuando cambie efectue los cambios
         game.addObserver(this);
         game.addObserver(gameViewPagerAdapter);
+
+        //TODO: BUG-> Cuando se bloquea y desbloquea el movil se vuelven a cargar nuevas palabras
 
         /* Comenzamos el juego */
         if (internetConnectionAvailable()) {
@@ -72,8 +82,42 @@ public class GameActivity extends AppCompatActivity implements Observer {
             gameState.setText(getString(R.string.loading));
         } else {
             // TODO: Mensaje de no hay conexion
+            // TODO Usar el mismo dialog que se use para cuando no hay palabras por el error 429
         }
     }
+
+
+    @Override
+    public void update(Observable observable, Object arg) {
+        if (observable instanceof Game) {
+            Game game = (Game)observable;
+            pointsString.setText(getString(R.string.points));
+            points.setText(Integer.toString(game.getCurrentPoints()));
+            level.setText(game.getGameModeString());
+
+            // TODO: ESTO HAY QUE CAMBIARLO CUANDO FUNCIONE
+            //nextBtnLayout.setVisibility(View.VISIBLE);
+
+            if(game.isRoundFinished()) {
+                gameState.setText("");
+                gameViewPager.setAdapter(gameViewPagerAdapter);
+            }
+
+
+            //TODO: Poner roundFinished a true cuando se restauren palabras
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /* remove observer at this point */
+        if(game != null) {
+            game.deleteObserver(this);
+            game.deleteObserver(gameViewPagerAdapter);
+        }
+    }
+
 
     private void initializeViews(){
         gameViewPager = findViewById(R.id.viewPagerGame);
@@ -103,34 +147,143 @@ public class GameActivity extends AppCompatActivity implements Observer {
         return activeNetwork != null && activeNetwork.isConnected();
     }
 
-    //TODO: Funcion de patron observer
-    @Override
-    public void update(Observable observable, Object arg) {
-        if (observable != null && observable instanceof Game) {
-            Game game = (Game)observable;
-            pointsString.setText(getString(R.string.points));
-            points.setText(Integer.toString(game.getCurrentPoints()));
-            level.setText(game.getGameModeString());
-            gameState.setText("");
-            nextBtnLayout.setVisibility(View.VISIBLE);
+    /**
+     * Receive the interaction from the user when it clicks an option in the game.
+     * @param view ToggleButton pressed
+     */
+    public void onClickToggleButtons(View view){
+        ToggleButton pressedOption = (ToggleButton) view;
+        int pagePosition = (int) pressedOption.getTag();
+        boolean checked = pressedOption.isChecked();
+        String infoButton = (String) ((ToggleButton) view).getText();
 
-            /* Se crea el viewPager despues de haber generado las palabras, para que se puedan asignar*/
-            gameViewPager.setAdapter(gameViewPagerAdapter);
+        if(pagePosition == WORDS_VIEW){
+            if(game.isCheckedWord()){
+                if(game.getChosenWord().equals(infoButton)){
+                    game.setCheckedWord(checked);
+                    game.setChosenWord("");
+                    ((ToggleButton) view).setChecked(false);
+                } else{
+                    ((ToggleButton) view).setChecked(false);
+                    changePage(pagePosition);
+                }
+            } else{
+                game.setCheckedWord(checked);
+                game.setChosenWord(infoButton);
+                changePage(pagePosition);
+            }
+        } else if(pagePosition == DEFINITIONS_VIEW){
+            if(game.isCheckedDefinition()){
+                if(game.getChosenDefinition().equals(infoButton)) {
+                    game.setCheckedDefinition(checked);
+                    game.setChosenDefinition("");
+                    ((ToggleButton) view).setChecked(false);
+                } else {
+                    ((ToggleButton) view).setChecked(false);
+                    changePage(pagePosition);
+                }
+            } else{
+                game.setCheckedDefinition(checked);
+                game.setChosenDefinition(infoButton);
+                changePage(pagePosition);
+            }
+        }
+
+        game.setRoundFinished(false);
+
+        performClickResponse(pagePosition, (ToggleButton) view);
+    }
+
+    /**
+     * Perform a certain behaviour depending on the game state.
+     * @param pagePosition Integer referred to the actual page position: words or definitions
+     */
+    private void performClickResponse(int pagePosition, final ToggleButton pressedButton){
+        final LinearLayout backgroundLayout = findViewById(R.id.mainLayout);
+        final LinearLayout topLayout = findViewById(R.id.topLayout);
+        final LinearLayout bottomLayout = findViewById(R.id.bottomLayout);
+
+        // TODO: Debe ser el boton anterior pulsado
+        //final ToggleButton associatedButton = findViewById(secondPressedButton.getId());
+
+        Handler handler;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                game.setChosenWord("");
+                game.setChosenDefinition("");
+                game.setCheckedDefinition(false);
+                game.setCheckedWord(false);
+                changeLayout(backgroundLayout, R.drawable.grad_bg_game_normal,
+                        topLayout, R.drawable.gradient_menu_game_normal,
+                        bottomLayout, R.drawable.gradient_menu_game_normal_inverse, "");
+
+                //associatedButton.setChecked(false);
+                pressedButton.setChecked(false);
+            }
+        };
+        if(game.pairSelected()){
+            if(game.correctPair()){
+                YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(findViewById(pressedButton.getId()));
+                pressedButton.setVisibility(View.INVISIBLE);
+                //associatedButton.setVisibility(View.INVISIBLE);
+
+                game.setCurrentPoints(game.getCurrentPoints() + 5);
+
+                animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
+                        R.drawable.grad_bg_game_correct, R.drawable.gradient_menu_game_correct, R.drawable.gradient_menu_game_correct_inverse,
+                        getString(R.string.success_matchup), Techniques.Landing);
+            } else {
+                game.setCurrentPoints(game.getCurrentPoints() - 5);
+
+                animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
+                        R.drawable.grad_bg_game_error, R.drawable.gradient_menu_game_error, R.drawable.gradient_menu_game_error_inverse,
+                        getString(R.string.error_matchup), Techniques.Shake);
+            }
+            //Inicia la animación
+            handler = new Handler();
+            handler.postDelayed(runnable, 1500);
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        /* remove observer at this point */
-        if(game != null) {
-            game.deleteObserver(this);
+
+    private void animateCorrectOrError(LinearLayout bgLayout, LinearLayout topLayout, LinearLayout bottomLayout,
+                                       int background, int top, int bottom, String state, Techniques stateAnimation){
+
+        changeLayout(bgLayout, background, topLayout, top, bottomLayout, bottom, state);
+
+        if(game.isRecord()){
+            pointsString.setText(getString(R.string.record));
+            YoYo.with(Techniques.DropOut).duration(1300).repeat(0).playOn(findViewById(R.id.points));
+        }
+
+        YoYo.with(stateAnimation).duration(1000).repeat(0).playOn(findViewById(R.id.gameState));
+        YoYo.with(Techniques.DropOut).duration(1300).repeat(0).playOn(findViewById(R.id.pointsNumber));
+    }
+
+
+    private void changePage(int pagePosition){
+        if(pagePosition == WORDS_VIEW){
+            gameViewPager.setCurrentItem(DEFINITIONS_VIEW);
+
+        } else{
+            gameViewPager.setCurrentItem(WORDS_VIEW);
         }
     }
+
+    private void changeLayout(LinearLayout bgLayout, int background, LinearLayout topLayout, int top,
+                              LinearLayout bottomLayout, int bottom, String state){
+        bgLayout.setBackgroundResource(background);
+        topLayout.setBackgroundResource(top);
+        bottomLayout.setBackgroundResource(bottom);
+        gameState.setText(state);
+    }
+
 
     private class WordLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Word>>  {
         public static final String PARAM_QUERY = "queryParam";
         public static final String OPTIONAL_PARAM = "optionalParam";
+
 
         /**
          * Si al llamar a initLoader() en onCreate() de MainActivity el ID no existe, se ejecuta esta
@@ -153,6 +306,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
          */
         @Override
         public void onLoadFinished(@NonNull Loader<List<Word>> loader, List<Word> data) {
+            // TODO: Comprobar primero que no haya ninguna palabra o definicion a null (Error 429)
+
             if (data != null) {
                 game.updateWords(data);
             }

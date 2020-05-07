@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         handler.postDelayed(runnable, 2500);
 
-        /*//Pruebas, borrar
-        new TestWorker().execute();*/
-
         //Realiza una animación del logo
         YoYo.with(Techniques.Landing).duration(1700).repeat(0).playOn(findViewById(R.id.logo));
     }

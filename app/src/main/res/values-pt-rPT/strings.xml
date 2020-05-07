@@ -14,4 +14,5 @@
     <string name="level_easy">Facil</string>
     <string name="error_matchup">Erro !</string>
     <string name="loading">Carregando . . .</string>
+    <string name="record">"Recorde : "</string>
 </resources>
