@@ -13,5 +13,64 @@
         android:text="Diccionario"
         android:textSize="36sp"
         tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="305dp" />
+        tools:layout_editor_absoluteY="336dp" />
+
+    <EditText
+        android:id="@+id/wordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Word"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.162" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="158dp"
+        android:onClick="searchWord"
+        android:text="Buscar"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordText"
+        app:layout_constraintVertical_bias="0.087" />
+
+    <TextView
+        android:id="@+id/wordView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:layout_editor_absoluteX="176dp" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/wordView"
+        tools:layout_editor_absoluteX="180dp" />
+
+    <TextView
+        android:id="@+id/examplesView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionView"
+        tools:layout_editor_absoluteX="180dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
