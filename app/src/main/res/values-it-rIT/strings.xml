@@ -15,4 +15,6 @@
     <string name="error_matchup">Errore !</string>
     <string name="loading">Caricando . . .</string>
     <string name="record">"Record : "</string>
+    <string name="ups">Sembra che abbiamo finito le parole... Riprova tra qualche secondo.</string>
+    <string name="reset">Azzerare il livello</string>
 </resources>

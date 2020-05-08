@@ -17,8 +17,5 @@ public class MediumGame extends Game {
         return DictionaryService.getRandomWords(4, 5000, 12000);
     }
 */
-    @Override
-    protected boolean saveRecord(int record) {
-        return false;
-    }
+
 }

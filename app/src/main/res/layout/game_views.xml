@@ -16,6 +16,7 @@
         app:cardBackgroundColor="@color/transparent">
 
         <LinearLayout
+            android:id="@+id/layoutToggleButtons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAligned="false"

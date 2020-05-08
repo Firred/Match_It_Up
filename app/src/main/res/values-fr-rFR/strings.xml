@@ -15,4 +15,6 @@
     <string name="error_matchup">Erreur !</string>
     <string name="loading">Chargeant . . .</string>
     <string name="record">"Record: "</string>
+    <string name="ups">Il semble que nous soyons à court de mots... Essayez de nouveau dans quelques secondes.</string>
+    <string name="reset">Réinitialiser le niveau</string>
 </resources>

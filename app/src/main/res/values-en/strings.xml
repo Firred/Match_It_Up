@@ -15,4 +15,6 @@
     <string name="error_matchup">Error !</string>
     <string name="loading">Loading . . .</string>
     <string name="record">"Record : "</string>
+    <string name="ups">We seem to have run out of words... Try again in a few seconds.</string>
+    <string name="reset">Reset the level</string>
 </resources>

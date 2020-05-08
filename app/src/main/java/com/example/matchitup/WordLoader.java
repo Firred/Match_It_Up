@@ -65,11 +65,14 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
         if (optionalParams != null && optionalParams.size() >= 2) {
             words = DictionaryService.getRandomWords(randomLimit, optionalParams.get(0), optionalParams.get(1));
         }
+        if(words != null) {
+            for (String w : words) {
+                String def = DictionaryService.getDefinition(w);
 
-        for(String w : words) {
-            String def = DictionaryService.getDefinition(w);
-
-            data.add(new Word(w, def));
+                data.add(new Word(w, def));
+            }
+        } else {
+            data.add(new Word(null, null));
         }
 
         return data;

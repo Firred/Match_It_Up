@@ -17,9 +17,4 @@ public class HardGame extends Game {
         return DictionaryService.getRandomWords(5, 0, 5000);
     }
 */
-
-    @Override
-    protected boolean saveRecord(int record) {
-        return false;
-    }
 }

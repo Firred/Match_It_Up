@@ -18,8 +18,4 @@ public class EasyGame extends Game {
     }
 */
 
-    @Override
-    protected boolean saveRecord(int record) {
-        return false;
-    }
 }

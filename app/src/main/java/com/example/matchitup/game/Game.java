@@ -1,20 +1,24 @@
 package com.example.matchitup.game;
 
+import android.widget.ToggleButton;
+
 import com.example.matchitup.DictionaryService;
 import com.example.matchitup.Word;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
 public abstract class Game extends Observable {
 
-    private int record, currentPoints, lowFrecuency, highFrecuency, limitWords;
+    private int record, currentPoints, lowFrecuency, highFrecuency, limitWords, correctWords;
     private Map<String, String> wordMap;
     private String gameModeString, chosenWord, chosenDefinition;
     private boolean checkedWord, checkedDefinition, roundFinished;
+    private ToggleButton firstButtonPressed;
 
     public Game(String gameModeString, int record, int limitWords, int lowFrecuency, int highFrecuency) {
         this.gameModeString = gameModeString;
@@ -23,9 +27,10 @@ public abstract class Game extends Observable {
         this.lowFrecuency = lowFrecuency;
         this.highFrecuency = highFrecuency;
         this.checkedWord = false;
-        this.checkedDefinition = false;
         this.roundFinished = true;
+        this.checkedDefinition = false;
         this.currentPoints = 0;
+        this.correctWords = 0;
         this.chosenWord = "";
         this.chosenDefinition = "";
     }
@@ -56,6 +61,15 @@ public abstract class Game extends Observable {
 
     public Map<String, String> getWordMap() { return wordMap; }
 
+
+    public void setFirstButtonPressed(ToggleButton firstButtonPressed) {
+        this.firstButtonPressed = firstButtonPressed;
+    }
+
+    public ToggleButton getFirstButtonPressed() {
+        return firstButtonPressed;
+    }
+
     public void setCurrentPoints(int currentPoints) {
         this.currentPoints = currentPoints;
         if(this.currentPoints <= 0){
@@ -77,6 +91,18 @@ public abstract class Game extends Observable {
         return currentPoints > record;
     }
 
+    public int getCorrectWords() {
+        return correctWords;
+    }
+
+    public void setCorrectWords(int correctWords) {
+        this.correctWords = correctWords;
+    }
+
+    public boolean isNextRound(){
+        return correctWords >= limitWords;
+    }
+
     public boolean isRoundFinished() {
         return roundFinished;
     }
@@ -95,15 +121,6 @@ public abstract class Game extends Observable {
     }
 
 
-    /*private List<String> getDefinitions(List<String> words){
-        ArrayList<String> definitions = new ArrayList<>();
-        for (String w: words){
-            definitions.add(DictionaryService.getDefinition(w));
-        }
-        return definitions;
-    };*/
-
-
     /**
      * Updates the list of words and definitions of the game.
      * @param words a list of word to update
@@ -116,6 +133,28 @@ public abstract class Game extends Observable {
         setChanged();
         notifyObservers();
     }
+
+    public boolean lackOfInfo(){
+        boolean error = false;
+
+        Iterator iterator = wordMap.entrySet().iterator();
+        while (iterator.hasNext() && !error) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if (entry.getKey() == null || entry.getValue() == null){
+                error = true;
+            }
+        }
+
+        return error;
+    }
+
+
+    public void saveRecord(){
+        // TODO: coger la variable currentPoints y guardarla junto con el tipo de juego (gameModeString)
+    }
+
+
+
 
     /**
      * Obtains the definitions of the words stored in the list
@@ -149,11 +188,4 @@ public abstract class Game extends Observable {
 
         return new ArrayList<>(wordMap.keySet());
     }
-
-
-
-
-    /*TODO: Quizas se pueda hacer en un sitio de manera común si todos los juegos guardan la info en
-      TODO: en el mismo sitio*/
-    protected abstract boolean saveRecord(int record);
 }

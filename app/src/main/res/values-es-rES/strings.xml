@@ -15,4 +15,6 @@
     <string name="points">"Puntos : "</string>
     <string name="next_game">Siguiente</string>
     <string name="record">"Record : "</string>
+    <string name="ups">Parece que nos hemos quedado sin palabras... Vuelve a probar en unos segundos.</string>
+    <string name="reset">Reinicia el nivel</string>
 </resources>
