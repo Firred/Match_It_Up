@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,12 +15,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DictionaryActivity extends AppCompatActivity {
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
     private TextView word, description, examples;
+    private String audioUrl;
 
     private boolean internetConnectionAvailable(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -52,6 +55,18 @@ public class DictionaryActivity extends AppCompatActivity {
         }
     }
 
+    public void playAudio(View view) {
+        MediaPlayer mp = new MediaPlayer();
+
+        try {
+            mp.setDataSource(audioUrl);
+            mp.prepare();
+            mp.start();
+        } catch (IOException e) {
+            Log.e("DictActivity, audio", "prepare() failed");
+        }
+    }
+
     public class DictionaryLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Word>>  {
         public static final String PARAM_QUERY = "queryParam";
 
@@ -77,12 +92,14 @@ public class DictionaryActivity extends AppCompatActivity {
             if (data != null && data.size() > 0) {
                 Word w = data.get(0);
 
-                word.setText(data.get(0).getWord());
+                word.setText(w.getWord());
 
                 if(w.getDef() != null)
-                    description.setText(data.get(0).getDef());
+                    description.setText(w.getDef());
                 if(w.getExamples() != null)
-                    examples.setText(data.get(0).getExamples().toString());
+                    examples.setText(w.getExamples().toString());
+                if(w.getAudio() != null)
+                    audioUrl = w.getAudio();
             }
             else {
                 //TODO: Mensaje de palabra no encontrada (?)
@@ -103,6 +120,7 @@ public class DictionaryActivity extends AppCompatActivity {
             word.setText("");
             description.setText("");
             examples.setText("");
+            audioUrl = "";
         }
     }
 }
