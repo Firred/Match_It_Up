@@ -5,13 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,8 +18,6 @@ import java.util.Locale;
 public class ProfileActivity extends AppCompatActivity {
     Spinner spinner;
     String currentLanguage = "en", currentLang;
-
-    Locale myLocale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
             refresh.putExtra(currentLang, localeName);
             startActivity(refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 
-            SharedPreferences mPreferences = this.getSharedPreferences("matchPref", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = mPreferences.edit();
+            SharedPreferences.Editor editor = this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).edit();
             editor.putString("language_key", localeName);
             editor.commit();
         }

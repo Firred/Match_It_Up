@@ -13,15 +13,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DictionaryActivity extends AppCompatActivity {
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
     private TextView word, description, examples;
+    private ImageButton audio;
     private String audioUrl;
 
     private boolean internetConnectionAvailable(){
@@ -41,6 +42,8 @@ public class DictionaryActivity extends AppCompatActivity {
         this.word = findViewById(R.id.wordView);
         this.description = findViewById(R.id.descriptionView);
         this.examples = findViewById(R.id.examplesView);
+        this.audio = findViewById(R.id.audioButton);
+
 
         System.out.println("Hola estoy en diccionario");
     }
@@ -98,12 +101,19 @@ public class DictionaryActivity extends AppCompatActivity {
                     description.setText(w.getDef());
                 if(w.getExamples() != null)
                     examples.setText(w.getExamples().toString());
-                if(w.getAudio() != null)
+                if(w.getAudio() != null) {
                     audioUrl = w.getAudio();
+                    audio.setVisibility(View.VISIBLE);
+                }
+                else {
+                    audio.setVisibility(View.GONE);
+                }
             }
             else {
                 //TODO: Mensaje de palabra no encontrada (?)
             }
+
+            destroyLoader(loader.getId());
         }
 
         /**
@@ -122,5 +132,14 @@ public class DictionaryActivity extends AppCompatActivity {
             examples.setText("");
             audioUrl = "";
         }
+    }
+
+    /**
+     * Used by the LoaderCallback to destroy the current Loader.
+     * DO NOT USE IT IN ANY OTHER CASE.
+     * @param id the id of the Loader.
+     */
+    protected void destroyLoader(int id) {
+        LoaderManager.getInstance(this).destroyLoader(id);
     }
 }

@@ -55,8 +55,6 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
 
         data.add(word);
 
-        Log.d("loadWord0", data.get(0).getAudio());
-        Log.d("loadWord", "Word Loaded: " + data.get(0).toString());
         return data;
     }
 
