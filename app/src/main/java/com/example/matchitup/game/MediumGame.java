@@ -8,7 +8,7 @@ import java.util.List;
 public class MediumGame extends Game {
 
     public MediumGame(String gameModeString, int record, int limitWords, int lowFrecuency, int highFrecuency) {
-        super(gameModeString, record, limitWords, lowFrecuency, highFrecuency);
+        super(gameModeString, record, limitWords, lowFrecuency, highFrecuency, "medium");
     }
 
     /*

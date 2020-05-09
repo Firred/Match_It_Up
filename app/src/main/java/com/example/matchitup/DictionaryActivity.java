@@ -6,20 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 public class DictionaryActivity extends AppCompatActivity {
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
     private TextView word, description, examples;
+    private ImageButton audio;
+    private String audioUrl;
 
     private boolean internetConnectionAvailable(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -38,6 +42,8 @@ public class DictionaryActivity extends AppCompatActivity {
         this.word = findViewById(R.id.wordView);
         this.description = findViewById(R.id.descriptionView);
         this.examples = findViewById(R.id.examplesView);
+        this.audio = findViewById(R.id.audioButton);
+
 
         System.out.println("Hola estoy en diccionario");
     }
@@ -49,6 +55,18 @@ public class DictionaryActivity extends AppCompatActivity {
             Bundle queryBundle = new Bundle();
             queryBundle.putString(DictionaryLoaderCallbacks.PARAM_QUERY, wordText);
             LoaderManager.getInstance(this).restartLoader(WordLoader.WORD_LOADER_ID, queryBundle, bookLoaderCallbacks);
+        }
+    }
+
+    public void playAudio(View view) {
+        MediaPlayer mp = new MediaPlayer();
+
+        try {
+            mp.setDataSource(audioUrl);
+            mp.prepare();
+            mp.start();
+        } catch (IOException e) {
+            Log.e("DictActivity, audio", "prepare() failed");
         }
     }
 
@@ -77,16 +95,25 @@ public class DictionaryActivity extends AppCompatActivity {
             if (data != null && data.size() > 0) {
                 Word w = data.get(0);
 
-                word.setText(data.get(0).getWord());
+                word.setText(w.getWord());
 
                 if(w.getDef() != null)
-                    description.setText(data.get(0).getDef());
+                    description.setText(w.getDef());
                 if(w.getExamples() != null)
-                    examples.setText(data.get(0).getExamples().toString());
+                    examples.setText(w.getExamples().toString());
+                if(w.getAudio() != null) {
+                    audioUrl = w.getAudio();
+                    audio.setVisibility(View.VISIBLE);
+                }
+                else {
+                    audio.setVisibility(View.GONE);
+                }
             }
             else {
                 //TODO: Mensaje de palabra no encontrada (?)
             }
+
+            destroyLoader(loader.getId());
         }
 
         /**
@@ -103,6 +130,16 @@ public class DictionaryActivity extends AppCompatActivity {
             word.setText("");
             description.setText("");
             examples.setText("");
+            audioUrl = "";
         }
+    }
+
+    /**
+     * Used by the LoaderCallback to destroy the current Loader.
+     * DO NOT USE IT IN ANY OTHER CASE.
+     * @param id the id of the Loader.
+     */
+    protected void destroyLoader(int id) {
+        LoaderManager.getInstance(this).destroyLoader(id);
     }
 }

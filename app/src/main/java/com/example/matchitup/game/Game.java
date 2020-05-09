@@ -16,11 +16,12 @@ public abstract class Game extends Observable {
 
     private int record, currentPoints, lowFrecuency, highFrecuency, limitWords, correctWords;
     private Map<String, String> wordMap;
-    private String gameModeString, chosenWord, chosenDefinition;
+    private String gameModeString, chosenWord, chosenDefinition, gameModeId;
     private boolean checkedWord, checkedDefinition, roundFinished;
     private ToggleButton firstButtonPressed;
 
-    public Game(String gameModeString, int record, int limitWords, int lowFrecuency, int highFrecuency) {
+    public Game(String gameModeString, int record, int limitWords, int lowFrecuency,
+                int highFrecuency, String gameModeId) {
         this.gameModeString = gameModeString;
         this.record = record;
         this.limitWords = limitWords;
@@ -33,6 +34,7 @@ public abstract class Game extends Observable {
         this.correctWords = 0;
         this.chosenWord = "";
         this.chosenDefinition = "";
+        this.gameModeId = gameModeId;
     }
 
     public int getLowFrecuency() {
@@ -54,6 +56,8 @@ public abstract class Game extends Observable {
     public String getChosenWord() { return chosenWord; }
 
     public String getChosenDefinition() { return chosenDefinition; }
+
+    public String getGameModeId() { return  gameModeId; }
 
     public boolean isCheckedWord() { return checkedWord; }
 
@@ -147,13 +151,6 @@ public abstract class Game extends Observable {
 
         return error;
     }
-
-
-    public void saveRecord(){
-        // TODO: coger la variable currentPoints y guardarla junto con el tipo de juego (gameModeString)
-    }
-
-
 
 
     /**

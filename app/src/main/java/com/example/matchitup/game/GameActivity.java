@@ -9,6 +9,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -26,12 +28,14 @@ import android.widget.ToggleButton;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.matchitup.CustomViewPager;
+
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -59,11 +63,17 @@ public class GameActivity extends AppCompatActivity implements Observer {
         int gameMode = intent.getIntExtra("start_game", 0);
 
         GameFactory games = new GameFactory();
-        // TODO: EL RECORD DEPENDE DE LO QUE TENGA GUARDADO EL USUARIO
+
         switch(gameMode){
-            case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy) ,5); break;
-            case R.id.btnMedium: game = games.mediumGame(getString(R.string.level_medium), 5); break;
-            case R.id.btnHard: game = games.hardGame(getString(R.string.level_hard), 5); break;
+            case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy),
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                    .getInt("easy", 0)); break;
+            case R.id.btnMedium: game = games.mediumGame(getString(R.string.level_medium),
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                    .getInt("medium", 0)); break;
+            case R.id.btnHard: game = games.hardGame(getString(R.string.level_hard),
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                    .getInt("hard", 0)); break;
         }
 
         initializeViews();
@@ -71,13 +81,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
         game.addObserver(this);
         game.addObserver(gameViewPagerAdapter);
 
-
-        //TODO: BUG-> Cuando se bloquea y desbloquea el movil se vuelven a cargar nuevas palabras
-        // TODO: Tambien pasará cuando se gire la pantalla. Para arreglarlo tiene que ver con el Bundle
-        // TODO: que entra por parámetro en el onCreate
         requestNewWords();
     }
-
 
     @Override
     public void update(Observable observable, Object arg) {
@@ -106,6 +111,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
         if(game != null) {
             game.deleteObserver(this);
             game.deleteObserver(gameViewPagerAdapter);
+
+            SharedPreferences.Editor editor =
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).edit();
+            editor.putInt(game.getGameModeId(), game.getCurrentPoints());
+            editor.commit();
         }
     }
 
@@ -240,9 +250,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     nextBtnLayout.setVisibility(View.VISIBLE);
                     game.setRoundFinished(true);
                     game.setCorrectWords(0);
-                    if(game.isRecord()){
-                        game.saveRecord();
-                    }
                 }
             }
         };
@@ -365,6 +372,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
             else {
                 game.updateWords(new ArrayList<Word>());
             }
+
+            destroyLoader(loader.getId());
         }
 
         /**
@@ -380,5 +389,14 @@ public class GameActivity extends AppCompatActivity implements Observer {
             loader.reset();
             //TODO: Se podría actulizar la interfaz (eliminar las palabras y descripciones). OPCIONAL
         }
+    }
+
+    /**
+     * Used by the LoaderCallback to destroy the current Loader.
+     * DO NOT USE IT IN ANY OTHER CASE.
+     * @param id the id of the Loader.
+     */
+    protected void destroyLoader(int id) {
+        LoaderManager.getInstance(this).destroyLoader(id);
     }
 }
