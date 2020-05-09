@@ -23,20 +23,36 @@
             android:scaleType="fitCenter"
             android:src="@drawable/logo" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/slidesLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/logo"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <!--Aqui se empiezan a mostrar los slides-->
-            <androidx.viewpager.widget.ViewPager
+            <com.example.matchitup.CustomViewPager
                 android:id="@+id/slideViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="3"/>
 
-        </RelativeLayout>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/menuNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_weight="1"
+                app:itemTextColor="@drawable/selector_menu_navigation"
+                app:itemIconTint="@drawable/selector_menu_navigation"
+                app:menu="@menu/menu_navigation"
+                android:layout_gravity="center">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        </LinearLayout>
 
 
     </RelativeLayout>

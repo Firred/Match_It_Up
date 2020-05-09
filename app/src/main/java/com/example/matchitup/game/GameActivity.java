@@ -18,33 +18,22 @@ import android.net.NetworkInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.eftimoff.viewpagertransformers.BackgroundToForegroundTransformer;
-import com.eftimoff.viewpagertransformers.CubeInTransformer;
-import com.eftimoff.viewpagertransformers.CubeOutTransformer;
-import com.eftimoff.viewpagertransformers.DepthPageTransformer;
-import com.eftimoff.viewpagertransformers.StackTransformer;
-import com.eftimoff.viewpagertransformers.ZoomOutSlideTransformer;
-import com.example.matchitup.MainActivity;
+import com.example.matchitup.CustomViewPager;
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.zip.Inflater;
 
 public class GameActivity extends AppCompatActivity implements Observer {
     private final int WORD_LOADER_ID = 501;
@@ -56,7 +45,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private Game game;
     private TextView level, points, pointsString, gameState;
     private RelativeLayout nextBtnLayout;
-    private GameViewPager gameViewPager;
+    private CustomViewPager gameViewPager;
     private GameViewPagerAdapter gameViewPagerAdapter;
     private Dialog popUpNotification;
 
@@ -122,7 +111,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     private void initializeViews(){
         gameViewPager = findViewById(R.id.viewPagerGame);
-        gameViewPager.setPageTransformer(true, new CubeOutTransformer());
+        //gameViewPager.setPageTransformer(true, new CubeOutTransformer());
+        gameViewPager.setTime(250);
         gameViewPagerAdapter = new GameViewPagerAdapter(this);
         popUpNotification = new Dialog(this);
         level = findViewById(R.id.level);
@@ -273,12 +263,14 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     YoYo.with(Techniques.DropOut).duration(1300).repeat(0).playOn(findViewById(R.id.points));
                 }
 
+
                 // Realiza la animación de cambiar los colores a correcto
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
                         R.drawable.grad_bg_game_correct, R.drawable.gradient_menu_game_correct, R.drawable.gradient_menu_game_correct_inverse,
                         getString(R.string.success_matchup), Techniques.Landing);
             } else {
                 game.setCurrentPoints(game.getCurrentPoints() - GAME_POINTS);
+
 
                 // Realiza la animación de cambiar los colores a error
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,

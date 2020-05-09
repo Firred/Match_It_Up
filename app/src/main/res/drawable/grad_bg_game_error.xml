@@ -1,13 +1,11 @@
 <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <gradient
+    <!--<gradient
         android:type="linear"
         android:startColor="@color/rojoOscuro"
         android:centerColor="@color/colorAccent"
         android:endColor="@color/rojoOscuro"
-        android:angle="270" />
-    <stroke
-        android:width="3dp"
-        android:color="@color/rojoOscuro" />
-    <corners android:radius="30dp" />
+        android:angle="270" />-->
+    <solid android:color="@color/rojoMuyOscuro"/>
+
 </shape>

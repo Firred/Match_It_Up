@@ -85,17 +85,14 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         buttons.add((ToggleButton) view.findViewById(R.id.button3));
         buttons.add((ToggleButton) view.findViewById(R.id.button4));
 
-        /*Collection words = word_definition.values();
-        words = words.shuffle();*/
 
-        // TODO: Lo suyo sería reordenar el mapa o coger los elementos de forma random
         List shuffled;
         if(position == WORDS_VIEW){
-            shuffled = new ArrayList<String>(word_definition.keySet());
+            shuffled = new ArrayList<>(word_definition.keySet());
             Collections.shuffle(shuffled);
             prepareButtons(buttons, shuffled, position);
         } else if (position == DEFINITIONS_VIEW){
-            shuffled = new ArrayList<String>(word_definition.values());
+            shuffled = new ArrayList<>(word_definition.values());
             Collections.shuffle(shuffled);
             prepareButtons(buttons, shuffled, position);
         }

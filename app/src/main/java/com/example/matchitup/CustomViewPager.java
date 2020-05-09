@@ -1,4 +1,4 @@
-package com.example.matchitup.game;
+package com.example.matchitup;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,10 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 import java.lang.reflect.Field;
 
 
-public class GameViewPager extends ViewPager {
+public class CustomViewPager extends ViewPager {
     private boolean enabled;
+    private int time;
 
-    public GameViewPager(Context context, AttributeSet attrs){
+    public CustomViewPager(Context context, AttributeSet attrs){
         super(context, attrs);
         this.enabled = true;
         setMyScroller();
@@ -40,6 +41,14 @@ public class GameViewPager extends ViewPager {
         this.enabled = enabled;
     }
 
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
     private void setMyScroller() {
         try {
             Class<?> viewpager = ViewPager.class;
@@ -58,7 +67,7 @@ public class GameViewPager extends ViewPager {
 
         @Override
         public void startScroll(int startX, int startY, int dx, int dy, int duration) {
-            super.startScroll(startX, startY, dx, dy, 400 /*1 secs*/);
+            super.startScroll(startX, startY, dx, dy, getTime() /*1 secs*/);
         }
     }
 

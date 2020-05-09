@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#C9F182</color>
+    <color name="colorPrimary">#DEFFA4</color>
     <color name="colorPrimaryDark">#608D11</color>
     <color name="gradStart">#87D105</color>
     <color name="gradStop">#8FD14E</color>
@@ -14,9 +14,10 @@
     <color name="naranjaClaro">#FABE50</color>
     <color name="naranjaMuyClaro">#4DFABE50</color>
 
-    <color name="rojoOscuro">#E02D0D</color>
-    <color name="rojo">#DF3719</color>
+    <color name="rojoOscuro">#ff1a1a</color>
+    <color name="rojo">#ff0000</color>
     <color name="rojoClaro">#F9583C</color>
+    <color name="rojoMuyOscuro">#9B2915</color>
 
 
     <color name="white">#FFFFFF</color>
@@ -24,5 +25,77 @@
 
 
     <color name="slideColor">#5E81A646</color>
+    <color name="whiteTransparent">#5EFFFFFF</color>
+
+
+    <!-- PRUEBA DE COLOR 8 -->
+    <color name="muyOscuro_9">#E8F1F2</color>
+    <color name="oscuro_9">#B3EFB2</color>
+    <color name="normal_9">#7A9E7E</color>
+    <color name="claro_9">#31493C</color>
+    <color name="muyClaro_9">#001A23</color>
+    <color name="default_1">#65743A</color>
+    <color name="default_2">#283618</color>
+
+
+    <!-- PRUEBA DE COLOR 1 -->
+    <color name="muyOscuro_1">#022B3A</color>
+    <color name="oscuro_1">#1F7A8C</color>
+    <color name="normal_1">#BFDBF7</color>
+    <color name="claro_1">#E1E5F2</color>
+    <color name="muyClaro_1">#FFFFFF</color>
+
+
+    <!-- PRUEBA DE COLOR 2 -->
+    <color name="muyOscuro_2">#000000</color>
+    <color name="oscuro_2">#2F4550</color>
+    <color name="normal_2">#586F7C</color>
+    <color name="claro_2">#B8DBD9</color>
+    <color name="muyClaro_2">#F4F4F9</color>
+
+
+    <!-- PRUEBA DE COLOR 3 -->
+    <color name="muyOscuro_3">#648767</color>
+    <color name="oscuro_3">#7DC95E</color>
+    <color name="normal_3">#7CDF64</color>
+    <color name="claro_3">#BFC0C0</color>
+    <color name="muyClaro_3">#CEE7E6</color>
+
+    <!-- PRUEBA DE COLOR 4 -->
+    <color name="muyOscuro_4">#040F0F</color>
+    <color name="oscuro_4">#248232</color>
+    <color name="normal_4">#2BA84A</color>
+    <color name="claro_4">#2D3A3A</color>
+    <color name="muyClaro_4">#FCFFFC</color>
+
+    <!-- PRUEBA DE COLOR 5 -->
+    <color name="muyOscuro_5">#4D5057</color>
+    <color name="oscuro_5">#4E6E5D</color>
+    <color name="normal_5">#4DA167</color>
+    <color name="claro_5">#3BC14A</color>
+    <color name="muyClaro_5">#CFCFCF</color>
+
+    <!-- PRUEBA DE COLOR 6 -->
+    <color name="muyOscuro_6">#0D0630</color>
+    <color name="oscuro_6">#18314F</color>
+    <color name="normal_6">#384E77</color>
+    <color name="claro_6">#8BBEB2</color>
+    <color name="muyClaro_6">#E6F9AF</color>
+
+    <!-- PRUEBA DE COLOR 7 -->
+    <color name="muyOscuro_7">#040F0F</color>
+    <color name="oscuro_7">#248232</color>
+    <color name="normal_7">#2BA84A</color>
+    <color name="claro_7">#2D3A3A</color>
+    <color name="muyClaro_7">#FCFFFC</color>
+
+    <!-- PRUEBA DE COLOR 8 -->
+    <color name="muyOscuro_8">#161925</color>
+    <color name="oscuro_8">#23395B</color>
+    <color name="normal_8">#406E8E</color>
+    <color name="claro_8">#8EA8C3</color>
+    <color name="muyClaro_8">#CBF7ED</color>
+
+
 
 </resources>

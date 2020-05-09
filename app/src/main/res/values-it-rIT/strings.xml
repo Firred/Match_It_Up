@@ -6,9 +6,9 @@
     <string name="description_dictionary_menu">Cercate le parole con cui avete esitato e imparatele in modo più tradizionale.</string>
     <string name="description_profile_menu">Trova i migliori punteggi che hai ottenuto in tutti i livelli giocati e cambia la lingua dell\'applicazione per un\'altra.</string>
     <string name="description_play_menu">Iniziate a giocare e cercate di far combaciare il maggior numero possibile di parole con il loro significato. Più si abbina, più alto è il punteggio.</string>
-    <string name="play_menu">GIOCARE</string>
-    <string name="profile_menu">PROFILO</string>
-    <string name="dictionary_menu">DIZIONARIO</string>
+    <string name="play_menu">Giocare</string>
+    <string name="profile_menu">Profilo</string>
+    <string name="dictionary_menu">Dizionario</string>
     <string name="level_easy">Facile</string>
     <string name="level_medium">Medio</string>
     <string name="level_hard">Difficile</string>

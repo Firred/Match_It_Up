@@ -6,9 +6,9 @@
     <string name="description_dictionary_menu">Verifique as palavras que você duvidou e aprenda-as de uma maneira mais tradicional.</string>
     <string name="description_profile_menu">Encontre as melhores pontuações obtidas em todos os níveis jogados e mude a língua da candidatura para outra diferente.</string>
     <string name="description_play_menu">Comece a jogar e tente fazer corresponder o maior número possível de palavras ao seu significado. Quanto mais se igualar, maior será a pontuação.</string>
-    <string name="play_menu">JOGAR</string>
-    <string name="profile_menu">PERFIL</string>
-    <string name="dictionary_menu">DICIONARIO</string>
+    <string name="play_menu">Jogar</string>
+    <string name="profile_menu">Perfil</string>
+    <string name="dictionary_menu">Dicionario</string>
     <string name="level_hard">Dificil</string>
     <string name="level_medium">Medio</string>
     <string name="level_easy">Facil</string>

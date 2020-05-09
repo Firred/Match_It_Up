@@ -23,7 +23,7 @@
             android:fontFamily="@font/bungee"
             android:onClick="onPlayModePressed"
             android:text="@string/level_easy"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/white"
             android:textSize="20sp" />
         <Button
             android:id="@+id/btnMedium"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/level_medium"
             android:textSize="20sp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/white"
             android:fontFamily="@font/bungee"
             android:layout_weight="0.30"
             android:layout_gravity="center_horizontal"
@@ -50,7 +50,7 @@
             android:fontFamily="@font/bungee"
             android:onClick="onPlayModePressed"
             android:text="@string/level_hard"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
     </LinearLayout>
