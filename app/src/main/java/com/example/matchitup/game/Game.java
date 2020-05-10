@@ -1,10 +1,13 @@
 package com.example.matchitup.game;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ToggleButton;
 
 import com.example.matchitup.DictionaryService;
 import com.example.matchitup.Word;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-public abstract class Game extends Observable {
+public abstract class Game extends Observable implements Serializable {
 
     private int record, currentPoints, lowFrecuency, highFrecuency, limitWords, correctWords;
     private Map<String, String> wordMap;
@@ -124,6 +127,13 @@ public abstract class Game extends Observable {
         return realDefinition.equals(chosenDefinition);
     }
 
+    public void setWordMap(Map<String, String> wordMap) {
+        this.wordMap = wordMap;
+
+        setChanged();
+        notifyObservers();
+    }
+
 
     /**
      * Updates the list of words and definitions of the game.
@@ -134,6 +144,11 @@ public abstract class Game extends Observable {
         for(Word w : words) {
             wordMap.put(w.getWord(), w.getDef());
         }
+        setChanged();
+        notifyObservers();
+    }
+
+    void forceUpdate() {
         setChanged();
         notifyObservers();
     }
@@ -150,39 +165,5 @@ public abstract class Game extends Observable {
         }
 
         return error;
-    }
-
-
-    /**
-     * Obtains the definitions of the words stored in the list
-     * @return a list of definitions
-     */
-    //TODO: Esto se podría hacer en updateWords almacenando las definiciones en la lista
-    // según se va creando el map (evitando así recorrer la lista de nuevo), pero implciaría tener
-    // una instancia de la lista almacenada tod0 el rato y no sé si es worth it.
-    // Esta función sobreescribe a la otra de getDefinions, no la borro por si al final esto
-    // es una mierda y hay que borrarlo.
-    private List<String> getDefinitions() {
-        List<String> defs = new ArrayList<>();
-
-        for(String definition : wordMap.values()) {
-            defs.add(definition);
-        }
-
-        return defs;
-    }
-
-    /**
-     * Obtains the list of words of the game.
-     * @return a list of words
-     */
-    //TODO: Al igual que getDefinitions, esto se podría hacer en el updateWords
-    // a costa de tener otra lista en la clase.
-    // Con esta clase no haría falta el getWords abstracto.
-    // También se podría devolver un Set<String> y así no hace falta crear el list,
-    // pero solo se podría usar para recorrer el set, ya que no tiene un get(index).
-    private List<String> getWords() {
-
-        return new ArrayList<>(wordMap.keySet());
     }
 }

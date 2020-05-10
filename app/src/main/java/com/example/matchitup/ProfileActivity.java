@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,14 +18,19 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
+    private final String STATE_LANGUAGE = "language";
     Spinner spinner;
-    String currentLanguage = "en", currentLang;
+    String currentLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currentLanguage = getIntent().getStringExtra(currentLang);
+        if (savedInstanceState != null) {
+            LocaleManager.setLocale(this, savedInstanceState.getString(STATE_LANGUAGE));
+        }
+
+        currentLanguage = getResources().getConfiguration().locale.getLanguage();
 
         setContentView(R.layout.activity_profile);
 
@@ -68,8 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
         System.out.println("Hola estoy en profile");
@@ -81,15 +87,24 @@ public class ProfileActivity extends AppCompatActivity {
      */
     public void setLocale(String localeName) {
         if (!localeName.equals(currentLanguage)) {
+            currentLanguage = localeName;
             LocaleManager.setLocale(this, localeName);
-
-            Intent refresh = new Intent(this, MainActivity.class);
-            refresh.putExtra(currentLang, localeName);
-            startActivity(refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 
             SharedPreferences.Editor editor = this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).edit();
             editor.putString("language_key", localeName);
             editor.commit();
+
+            Intent refresh = new Intent(this, MainActivity.class);
+            finish();
+            startActivity(refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_LANGUAGE,
+                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                        .getString("language_key", Locale.getDefault().getLanguage()));
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

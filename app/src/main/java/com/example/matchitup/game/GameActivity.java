@@ -5,25 +5,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
-import androidx.viewpager.widget.ViewPager;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,27 +25,22 @@ import android.widget.ToggleButton;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.eftimoff.viewpagertransformers.BackgroundToForegroundTransformer;
-import com.eftimoff.viewpagertransformers.CubeInTransformer;
 import com.eftimoff.viewpagertransformers.CubeOutTransformer;
-import com.eftimoff.viewpagertransformers.DepthPageTransformer;
-import com.eftimoff.viewpagertransformers.StackTransformer;
-import com.eftimoff.viewpagertransformers.ZoomOutSlideTransformer;
 import com.example.matchitup.LocaleManager;
-import com.example.matchitup.MainActivity;
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.zip.Inflater;
 
 public class GameActivity extends AppCompatActivity implements Observer {
+    private final String STATE_LANGUAGE = "language", STATE_GAME = "game";
     private final int WORD_LOADER_ID = 501;
     private static final int WORDS_VIEW = 0;
     private static final int DEFINITIONS_VIEW = 1;
@@ -69,31 +58,43 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_game);
-
-        Intent intent = getIntent();
-        int gameMode = intent.getIntExtra("start_game", 0);
-
-        GameFactory games = new GameFactory();
-
-        switch(gameMode){
-            case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy),
-                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
-                    .getInt("easy", 0)); break;
-            case R.id.btnMedium: game = games.mediumGame(getString(R.string.level_medium),
-                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
-                    .getInt("medium", 0)); break;
-            case R.id.btnHard: game = games.hardGame(getString(R.string.level_hard),
-                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
-                    .getInt("hard", 0)); break;
-        }
 
         initializeViews();
 
-        game.addObserver(this);
-        game.addObserver(gameViewPagerAdapter);
+        if(savedInstanceState != null) {
+            LocaleManager.setLocale(this, savedInstanceState.getString(STATE_LANGUAGE));
+            game = (Game)savedInstanceState.getSerializable(STATE_GAME);
 
-        requestNewWords();
+            game.addObserver(this);
+            game.addObserver(gameViewPagerAdapter);
+
+            game.forceUpdate();
+        }
+        else {
+            Intent intent = getIntent();
+            int gameMode = intent.getIntExtra("start_game", 0);
+
+            GameFactory games = new GameFactory();
+
+            switch(gameMode){
+                case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy),
+                        this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                                .getInt("easy", 0)); break;
+                case R.id.btnMedium: game = games.mediumGame(getString(R.string.level_medium),
+                        this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                                .getInt("medium", 0)); break;
+                case R.id.btnHard: game = games.hardGame(getString(R.string.level_hard),
+                        this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                                .getInt("hard", 0)); break;
+            }
+
+            game.addObserver(this);
+            game.addObserver(gameViewPagerAdapter);
+
+            requestNewWords();
+        }
     }
 
     @Override
@@ -407,5 +408,14 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     protected void destroyLoader(int id) {
         LoaderManager.getInstance(this).destroyLoader(id);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_LANGUAGE,
+                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                        .getString("language_key", Locale.getDefault().getLanguage()));
+        savedInstanceState.putSerializable(STATE_GAME, game);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
