@@ -37,7 +37,7 @@ import java.util.Locale;
 public class DictionaryActivity extends AppCompatActivity {
     private final String STATE_LANGUAGE = "language";
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
-    private TextView definitionTitle, examplesTitle, description, examples, noResults, searchText;
+    private TextView description, examples, noResults, searchText;
     private CardView cardViewDefinition, cardViewExamples;
     private LinearLayout layoutDictionary;
     private ImageButton audio;
@@ -63,7 +63,6 @@ public class DictionaryActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_dictionary);
-
 
         layoutDictionary = findViewById(R.id.layoutDictionary);
         searchText = findViewById(R.id.searchText);
@@ -105,8 +104,6 @@ public class DictionaryActivity extends AppCompatActivity {
 
         this.cardViewDefinition = findViewById(R.id.cardViewDefinition);
         this.cardViewExamples = findViewById(R.id.cardViewExamples);
-        this.definitionTitle = findViewById(R.id.definitionTitle);
-        this.examplesTitle = findViewById(R.id.examplesTitle);
         this.description = findViewById(R.id.descriptionView);
         this.examples = findViewById(R.id.examplesView);
         this.noResults = findViewById(R.id.noResults);
@@ -167,6 +164,25 @@ public class DictionaryActivity extends AppCompatActivity {
         noResults.setVisibility(View.GONE);
     }
 
+
+    /**
+     * Used by the LoaderCallback to destroy the current Loader.
+     * DO NOT USE IT IN ANY OTHER CASE.
+     * @param id the id of the Loader.
+     */
+    protected void destroyLoader(int id) {
+        LoaderManager.getInstance(this).destroyLoader(id);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_LANGUAGE,
+                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                        .getString("language_key", Locale.getDefault().getLanguage()));
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
     public class DictionaryLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Word>>  {
         public static final String PARAM_QUERY = "queryParam";
 
@@ -226,22 +242,5 @@ public class DictionaryActivity extends AppCompatActivity {
             examples.setText("");
             audioUrl = "";
         }
-    }
-
-    /**
-     * Used by the LoaderCallback to destroy the current Loader.
-     * DO NOT USE IT IN ANY OTHER CASE.
-     * @param id the id of the Loader.
-     */
-    protected void destroyLoader(int id) {
-        LoaderManager.getInstance(this).destroyLoader(id);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putString(STATE_LANGUAGE,
-                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
-                        .getString("language_key", Locale.getDefault().getLanguage()));
-        super.onSaveInstanceState(savedInstanceState);
     }
 }
