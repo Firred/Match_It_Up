@@ -28,7 +28,7 @@
             <ToggleButton
                 android:id="@+id/button0"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="7dp"
                 android:background="@drawable/toggle_buttons"
                 android:fontFamily="@font/raleway_semibold"
@@ -37,13 +37,13 @@
                 android:textAllCaps="false"
                 android:padding="8dp"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:visibility="gone" />
 
             <ToggleButton
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="7dp"
                 android:padding="8dp"
                 android:background="@drawable/toggle_buttons"
@@ -51,14 +51,14 @@
                 android:onClick="onClickToggleButtons"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:visibility="gone"
                 android:layout_weight="1"/>
 
             <ToggleButton
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="7dp"
                 android:padding="8dp"
                 android:background="@drawable/toggle_buttons"
@@ -66,17 +66,17 @@
                 android:onClick="onClickToggleButtons"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:visibility="gone"
                 android:layout_weight="1"/>
 
             <ToggleButton
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:visibility="gone"
                 android:onClick="onClickToggleButtons"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:padding="8dp"
                 android:fontFamily="@font/raleway_semibold"
                 android:textAllCaps="false"
@@ -88,10 +88,10 @@
             <ToggleButton
                 android:id="@+id/button4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:visibility="gone"
                 android:onClick="onClickToggleButtons"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:padding="8dp"
                 android:fontFamily="@font/raleway_semibold"
                 android:textAllCaps="false"

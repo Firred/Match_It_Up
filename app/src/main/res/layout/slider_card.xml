@@ -3,20 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/transparent">
+    android:background="@color/white">
     <!-- A CardView that contains a TextView -->
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:outlineAmbientShadowColor="@color/colorAccent"
-        android:outlineSpotShadowColor="@color/colorAccent"
-        app:cardBackgroundColor="@color/gradStop"
-        app:cardCornerRadius="13dp"
-        app:cardElevation="20dp"
-        android:layout_margin="15dp">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,12 +20,13 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
+            <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/slide_logo"
-                android:layout_width="220dp"
-                android:layout_height="261dp"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
                 android:paddingTop="45dp"
-                app:srcCompat="@drawable/jugar" />
+                app:srcCompat="@drawable/jugar"
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/slide_title"
@@ -38,9 +34,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bungee"
                 android:paddingTop="20dp"
+                android:textAllCaps="true"
                 android:text="@string/play_menu"
                 android:textColor="@color/colorAccent"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                />
 
             <TextView
                 android:id="@+id/slide_description"
@@ -51,10 +49,11 @@
                 android:text="@string/description_play_menu"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                android:layout_weight="2"/>
 
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </LinearLayout>
 

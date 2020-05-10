@@ -3,25 +3,18 @@ package com.example.matchitup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.transition.TransitionManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +27,9 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.eftimoff.viewpagertransformers.*;
-import com.example.matchitup.game.Game;
+import com.example.matchitup.dictionary.DictionaryActivity;
 import com.example.matchitup.game.GameActivity;
-import com.example.matchitup.game.GameFactory;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Locale;
 
@@ -44,12 +37,14 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     public static final String START_GAME = "start_game";
-    private ViewPager mSlideViewPager;
+    private CustomViewPager mSlideViewPager;
     private ImageView logo;
     private SliderAdapter sliderAdapter;
-    private RelativeLayout slidesLayout, mainLayout;
+    private LinearLayout slidesLayout;
+    private RelativeLayout mainLayout;
     private Dialog popUpPlayMenu;
     private Handler handler;
+    private BottomNavigationView navigationMenu;
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -70,10 +65,34 @@ public class MainActivity extends AppCompatActivity {
         mainLayout = findViewById(R.id.mainLayout);
         slidesLayout = findViewById(R.id.slidesLayout);
         logo = findViewById(R.id.logo);
+        navigationMenu = findViewById(R.id.menuNavigation);
+        navigationMenu.setSelectedItemId(R.id.play);
         mSlideViewPager = findViewById(R.id.slideViewPager);
         sliderAdapter = new SliderAdapter(this);
         mSlideViewPager.setAdapter(sliderAdapter);
+        mSlideViewPager.setCurrentItem(1);
+        mSlideViewPager.setPagingEnabled(false);
+        mSlideViewPager.setTime(250);
         mSlideViewPager.setPageTransformer(true, new ZoomOutSlideTransformer());
+
+        navigationMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.play:
+                        mSlideViewPager.setCurrentItem(1);
+                        break;
+                    case R.id.dictionary:
+                        mSlideViewPager.setCurrentItem(0);
+                        break;
+                    case R.id.profile:
+                        mSlideViewPager.setCurrentItem(2);
+                        break;
+                }
+                return true;
+            }
+        });
+
         //Inicia la animación
         handler = new Handler();
         handler.postDelayed(runnable, 2500);
@@ -99,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TransitionManager.beginDelayedTransition(mainLayout);
         }
-        logo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, convertDpToPx(100)));
+        logo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, convertDpToPx(80)));
         slidesLayout.setVisibility(View.VISIBLE);
         logo.setBackgroundResource(R.drawable.gradient_menu);
         logo.setImageResource(R.drawable.logo_lado);
@@ -124,26 +143,26 @@ public class MainActivity extends AppCompatActivity {
     private class SliderAdapter extends PagerAdapter {
 
         public final int[] SLIDE_IMAGES = {
-                R.drawable.jugar,
-                R.drawable.dict,
-                R.drawable.perfil
+                R.drawable.dictionary,
+                R.drawable.play,
+                R.drawable.profile
         };
 
         public final Class[] SLIDE_CLASSES = {
-                GameActivity.class,
                 DictionaryActivity.class,
+                GameActivity.class,
                 ProfileActivity.class
         };
 
         public final String[] SLIDE_TITLES = {
-                getString(R.string.play_menu),
                 getString(R.string.dictionary_menu),
+                getString(R.string.play_menu),
                 getString(R.string.profile_menu)
         };
 
         public final String[] SLIDE_DESCRIPTIONS = {
-                getString(R.string.description_play_menu),
                 getString(R.string.description_dictionary_menu),
+                getString(R.string.description_play_menu),
                 getString(R.string.description_profile_menu)
         };
 
@@ -185,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, (Class<?>) SLIDE_CLASSES[position]);
                     switch(position){
                         // Jugar
-                        case 0:
+                        case 1:
                             onPlayPressed();
                             break;
                         // Diccionario y perfil

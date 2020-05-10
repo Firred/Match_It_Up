@@ -6,9 +6,9 @@
     <string name="description_dictionary_menu">Look up the words you have hesitated with and learn them in a more traditional way.</string>
     <string name="description_profile_menu">Find the best scores you have achieved in all the levels played and change the language of the application for a different one.</string>
     <string name="description_play_menu">Start playing and try to match as many words as possible with their meaning. The more you match, the higher the score.</string>
-    <string name="play_menu">PLAY</string>
-    <string name="profile_menu">PROFILE</string>
-    <string name="dictionary_menu">DICTIONARY</string>
+    <string name="play_menu">Play</string>
+    <string name="profile_menu">Profile</string>
+    <string name="dictionary_menu">Dictionary</string>
     <string name="level_easy">Easy</string>
     <string name="level_medium">Medium</string>
     <string name="level_hard">Hard</string>
@@ -17,4 +17,9 @@
     <string name="record">"Record : "</string>
     <string name="ups">We seem to have run out of words... Try again in a few seconds.</string>
     <string name="reset">Reset the level</string>
+    <string name="search">Search</string>
+    <string name="search_message">Type your word here</string>
+    <string name="definition">Definition</string>
+    <string name="examples">Examples</string>
+    <string name="no_results">Word not found</string>
 </resources>

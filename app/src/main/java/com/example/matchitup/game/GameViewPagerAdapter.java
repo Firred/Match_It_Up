@@ -1,27 +1,15 @@
 package com.example.matchitup.game;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.example.matchitup.DictionaryActivity;
-import com.example.matchitup.ProfileActivity;
 import com.example.matchitup.R;
 
 import java.util.ArrayList;
@@ -85,17 +73,14 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         buttons.add((ToggleButton) view.findViewById(R.id.button3));
         buttons.add((ToggleButton) view.findViewById(R.id.button4));
 
-        /*Collection words = word_definition.values();
-        words = words.shuffle();*/
 
-        // TODO: Lo suyo sería reordenar el mapa o coger los elementos de forma random
         List shuffled;
         if(position == WORDS_VIEW){
-            shuffled = new ArrayList<String>(word_definition.keySet());
+            shuffled = new ArrayList<>(word_definition.keySet());
             Collections.shuffle(shuffled);
             prepareButtons(buttons, shuffled, position);
         } else if (position == DEFINITIONS_VIEW){
-            shuffled = new ArrayList<String>(word_definition.values());
+            shuffled = new ArrayList<>(word_definition.values());
             Collections.shuffle(shuffled);
             prepareButtons(buttons, shuffled, position);
         }

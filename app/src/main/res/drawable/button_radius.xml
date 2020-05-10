@@ -3,10 +3,11 @@
         android:width="3dp"
         android:color="@color/colorAccent" />
     <corners android:radius="20dp" />
-    <gradient
+    <!--<gradient
         android:type="linear"
-        android:startColor="@color/naranjaOscuro"
-        android:centerColor="@color/naranja"
-        android:endColor="@color/naranjaClaro"
-        android:angle="270" />
+        android:startColor="@color/gradStop"
+        android:centerColor="@color/gradStop"
+        android:endColor="@color/colorPrimary"
+        android:angle="270" />-->
+    <solid android:color="@color/colorPrimaryDark"/>
 </shape>

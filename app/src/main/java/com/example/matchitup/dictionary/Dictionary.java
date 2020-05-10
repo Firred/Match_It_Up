@@ -1,4 +1,4 @@
-package com.example.matchitup;
+package com.example.matchitup.dictionary;
 
 import org.json.JSONArray;
 import org.json.JSONException;

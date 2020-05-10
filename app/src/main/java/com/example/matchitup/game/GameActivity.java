@@ -5,12 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -22,15 +25,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.matchitup.CustomViewPager;
+
 import com.eftimoff.viewpagertransformers.CubeOutTransformer;
 import com.example.matchitup.LocaleManager;
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +53,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private Game game;
     private TextView level, points, pointsString, gameState;
     private RelativeLayout nextBtnLayout;
-    private GameViewPager gameViewPager;
+    private CustomViewPager gameViewPager;
     private GameViewPagerAdapter gameViewPagerAdapter;
     private Dialog popUpNotification;
 
@@ -58,7 +61,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_game);
 
         initializeViews();
@@ -134,7 +136,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     private void initializeViews(){
         gameViewPager = findViewById(R.id.viewPagerGame);
-        gameViewPager.setPageTransformer(true, new CubeOutTransformer());
+        //gameViewPager.setPageTransformer(true, new CubeOutTransformer());
+        gameViewPager.setTime(250);
         gameViewPagerAdapter = new GameViewPagerAdapter(this);
         popUpNotification = new Dialog(this);
         level = findViewById(R.id.level);
@@ -213,15 +216,15 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 changePage(pagePosition);
             }
         } else if(pagePosition == DEFINITIONS_VIEW){
-            // Se ha pulsado una definicion previamente
+            // Se ha pulsado una definition previamente
             if(game.isCheckedDefinition()){
                 if(game.getChosenDefinition().equals(infoButton)) {
-                    // Se aprieta la misma definicion para cancelarla
+                    // Se aprieta la misma definition para cancelarla
                     game.setCheckedDefinition(checked);
                     game.setChosenDefinition("");
                     ((ToggleButton) view).setChecked(false);
                 } else {
-                    // Se aprieta una definicion distinta de la misma pagina
+                    // Se aprieta una definition distinta de la misma pagina
                     ((ToggleButton) view).setChecked(false);
                     changePage(pagePosition);
                 }
@@ -282,12 +285,14 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     YoYo.with(Techniques.DropOut).duration(1300).repeat(0).playOn(findViewById(R.id.points));
                 }
 
+
                 // Realiza la animación de cambiar los colores a correcto
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
                         R.drawable.grad_bg_game_correct, R.drawable.gradient_menu_game_correct, R.drawable.gradient_menu_game_correct_inverse,
                         getString(R.string.success_matchup), Techniques.Landing);
             } else {
                 game.setCurrentPoints(game.getCurrentPoints() - GAME_POINTS);
+
 
                 // Realiza la animación de cambiar los colores a error
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
@@ -374,7 +379,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
          */
         @Override
         public void onLoadFinished(@NonNull Loader<List<Word>> loader, List<Word> data) {
-            // TODO: Comprobar primero que no haya ninguna palabra o definicion a null (Error 429)
+            // TODO: Comprobar primero que no haya ninguna palabra o definition a null (Error 429)
 
             if (data != null) {
                 game.updateWords(data);

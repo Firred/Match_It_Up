@@ -2,12 +2,10 @@
 
     <gradient
         android:type="linear"
-        android:startColor="@color/naranjaOscuro"
-        android:centerColor="@color/colorAccent"
-        android:endColor="@color/naranjaOscuro"
+        android:startColor="@color/default_2"
+        android:centerColor="@color/colorPrimaryDark"
+        android:endColor="@color/default_2"
         android:angle="270" />
-    <stroke
-        android:width="3dp"
-        android:color="@color/naranjaOscuro" />
-    <corners android:radius="30dp" />
+
+
 </shape>
