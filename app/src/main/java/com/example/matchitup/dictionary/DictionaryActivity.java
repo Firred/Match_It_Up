@@ -31,17 +31,23 @@ import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class DictionaryActivity extends AppCompatActivity {
     private final String STATE_LANGUAGE = "language";
+    private final String STATE_WORD = "word";
+    private final String STATE_DESC = "description";
+    private final String STATE_AUDIO = "audio";
+    private final String STATE_EXAMPLES = "examples";
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
     private TextView description, examples, noResults, searchText;
     private CardView cardViewDefinition, cardViewExamples;
     private LinearLayout layoutDictionary;
     private ImageButton audio;
     private String audioUrl;
+    private List<String> examplesList;
     private SearchView searchView;
 
 
@@ -108,6 +114,24 @@ public class DictionaryActivity extends AppCompatActivity {
         this.examples = findViewById(R.id.examplesView);
         this.noResults = findViewById(R.id.noResults);
         this.audio = findViewById(R.id.audioButton);
+
+        if (savedInstanceState != null) {
+            this.searchText.setText(savedInstanceState.getString(STATE_WORD));
+            this.description.setText(savedInstanceState.getString(STATE_DESC));
+
+            this.examplesList = savedInstanceState.getStringArrayList(STATE_EXAMPLES);
+            if (examplesList != null)
+                this.examples.setText(examplesList.toString());
+
+            audioUrl = savedInstanceState.getString(STATE_AUDIO);
+
+            if (audioUrl != null)
+                audio.setVisibility(View.VISIBLE);
+            else
+                audio.setVisibility(View.INVISIBLE);
+
+            prepareResultsToUser();
+        }
     }
 
     public void searchWord(String query) {
@@ -165,23 +189,6 @@ public class DictionaryActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Used by the LoaderCallback to destroy the current Loader.
-     * DO NOT USE IT IN ANY OTHER CASE.
-     * @param id the id of the Loader.
-     */
-    protected void destroyLoader(int id) {
-        LoaderManager.getInstance(this).destroyLoader(id);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putString(STATE_LANGUAGE,
-                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
-                        .getString("language_key", Locale.getDefault().getLanguage()));
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
 
     public class DictionaryLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Word>>  {
         public static final String PARAM_QUERY = "queryParam";
@@ -211,12 +218,15 @@ public class DictionaryActivity extends AppCompatActivity {
                 if (w.getDef() != null){
                     prepareResultsToUser();
                     description.setText(w.getDef());
-                    if (w.getExamples() != null)
-                        examples.setText(w.getExamples().toString());
+                    if (w.getExamples() != null) {
+                        examplesList = w.getExamples();
+                        examples.setText(examplesList.toString());
+                    }
                     if (w.getAudio() != null) {
                         audioUrl = w.getAudio();
                         audio.setVisibility(View.VISIBLE);
                     } else {
+                        audioUrl = null;
                         audio.setVisibility(View.INVISIBLE);
                     }
                 }  else {
@@ -242,5 +252,30 @@ public class DictionaryActivity extends AppCompatActivity {
             examples.setText("");
             audioUrl = "";
         }
+    }
+
+    /**
+     * Used by the LoaderCallback to destroy the current Loader.
+     * DO NOT USE IT IN ANY OTHER CASE.
+     * @param id the id of the Loader.
+     */
+    protected void destroyLoader(int id) {
+        LoaderManager.getInstance(this).destroyLoader(id);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_LANGUAGE,
+                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                        .getString("language_key", Locale.getDefault().getLanguage()));
+
+        savedInstanceState.putString(STATE_WORD, searchText.getText().toString());
+        savedInstanceState.putString(STATE_DESC, description.getText().toString());
+
+        if(audioUrl != null)
+            savedInstanceState.putString(STATE_AUDIO, audioUrl);
+
+        savedInstanceState.putStringArrayList(STATE_EXAMPLES, (ArrayList)examplesList);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
