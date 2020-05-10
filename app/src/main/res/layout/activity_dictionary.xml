@@ -51,43 +51,84 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/definitionTitle"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewDefinition"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/definition"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="6dp"
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/descriptionView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:visibility="gone"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/definitionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/definition"
+                android:textSize="25sp"
+                android:padding="10dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:background="@color/verdeClaro"/>
+
+            <TextView
+                android:id="@+id/descriptionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/raleway" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/noResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:text="@string/no_results"
+        android:textSize="25sp"
+        android:fontFamily="@font/raleway_semibold"
         android:gravity="center"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/examplesTitle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/examples"
         android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/examplesView"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewExamples"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="6dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/examplesTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/examples"
+                android:textSize="25sp"
+                android:padding="10dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:background="@color/verdeClaro"/>
+
+            <TextView
+                android:id="@+id/examplesView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/raleway" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

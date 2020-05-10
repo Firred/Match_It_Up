@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -33,6 +34,8 @@ import java.util.List;
 public class DictionaryActivity extends AppCompatActivity {
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
     private TextView definitionTitle, examplesTitle, description, examples, noResults, searchText;
+    private CardView cardViewDefinition, cardViewExamples;
+    private LinearLayout layoutDictionary;
     private ImageButton audio;
     private String audioUrl;
     private SearchView searchView;
@@ -52,6 +55,8 @@ public class DictionaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dictionary);
 
+
+        layoutDictionary = findViewById(R.id.layoutDictionary);
         searchText = findViewById(R.id.searchText);
 
         searchView = findViewById(R.id.search_view);
@@ -63,8 +68,12 @@ public class DictionaryActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     configSearch(0f, 1f, R.color.white);
+                    layoutDictionary.setBackgroundResource(R.color.muyClaro_5);
+                    feedbackToUser("");
                 } else {
                     configSearch(1f, 0.5f, R.drawable.gradient_menu);
+                    layoutDictionary.setBackgroundResource(R.color.white);
+                    prepareResultsToUser();
                     searchView.setIconified(true);
                 }
             }
@@ -85,6 +94,8 @@ public class DictionaryActivity extends AppCompatActivity {
             }
         });
 
+        this.cardViewDefinition = findViewById(R.id.cardViewDefinition);
+        this.cardViewExamples = findViewById(R.id.cardViewExamples);
         this.definitionTitle = findViewById(R.id.definitionTitle);
         this.examplesTitle = findViewById(R.id.examplesTitle);
         this.description = findViewById(R.id.descriptionView);
@@ -99,8 +110,9 @@ public class DictionaryActivity extends AppCompatActivity {
             Bundle queryBundle = new Bundle();
             queryBundle.putString(DictionaryLoaderCallbacks.PARAM_QUERY, query);
             LoaderManager.getInstance(this).restartLoader(WordLoader.WORD_LOADER_ID, queryBundle, bookLoaderCallbacks);
+            feedbackToUser(getString(R.string.loading));
         } else {
-            noResultsToUser(getString(R.string.ups));
+            feedbackToUser(getString(R.string.ups));
         }
     }
 
@@ -133,20 +145,16 @@ public class DictionaryActivity extends AppCompatActivity {
 
     }
 
-    public void noResultsToUser(String info){
-        definitionTitle.setVisibility(View.GONE);
-        examplesTitle.setVisibility(View.GONE);
-        description.setVisibility(View.GONE);
-        examples.setVisibility(View.GONE);
+    public void feedbackToUser(String info){
+        cardViewDefinition.setVisibility(View.GONE);
+        cardViewExamples.setVisibility(View.GONE);
         noResults.setVisibility(View.VISIBLE);
         noResults.setText(info);
     }
 
     public void prepareResultsToUser(){
-        definitionTitle.setVisibility(View.VISIBLE);
-        examplesTitle.setVisibility(View.VISIBLE);
-        description.setVisibility(View.VISIBLE);
-        examples.setVisibility(View.VISIBLE);
+        cardViewDefinition.setVisibility(View.VISIBLE);
+        cardViewExamples.setVisibility(View.VISIBLE);
         noResults.setVisibility(View.GONE);
     }
 
@@ -187,7 +195,7 @@ public class DictionaryActivity extends AppCompatActivity {
                         audio.setVisibility(View.INVISIBLE);
                     }
                 }  else {
-                    noResultsToUser(getString(R.string.no_results));
+                    feedbackToUser(getString(R.string.no_results));
                 }
             }
 
