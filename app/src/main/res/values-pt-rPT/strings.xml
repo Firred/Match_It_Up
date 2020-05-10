@@ -22,4 +22,7 @@
     <string name="definition">Definição</string>
     <string name="no_results">Palavra não encontrada</string>
     <string name="examples">Exemplos</string>
+    <string name="language">Língua</string>
+    <string name="records">Recorde</string>
+    <string name="select_language">Seleccione o idioma</string>
 </resources>

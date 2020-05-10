@@ -3,9 +3,9 @@
     <string name="next_game">Siguiente</string>
     <string name="points">"Puntos : "</string>
     <string name="success_matchup">¡ Correcto !</string>
-    <string name="level_easy">Facil</string>
+    <string name="level_easy">Fácil</string>
     <string name="level_medium">Medio</string>
-    <string name="level_hard">Dificil</string>
+    <string name="level_hard">Difícil</string>
     <string name="description_dictionary_menu">Consulta las palabras con las que hayas dudado y apréndelas de una manera más tradicional.</string>
     <string name="dictionary_menu">Diccionario</string>
     <string name="profile_menu">Perfil</string>
@@ -14,7 +14,7 @@
     <string name="description_play_menu">Comienza a jugar e intenta emparejar el mayor número de palabras posibles con su significado. Cuantas más emparejes, mayor puntuación obtendrás.</string>
     <string name="error_matchup">¡ Error !</string>
     <string name="loading">Cargando . . .</string>
-    <string name="record">"Record : "</string>
+    <string name="record">"Récord : "</string>
     <string name="ups">Parece que nos hemos quedado sin palabras... Vuelve a probar en unos segundos.</string>
     <string name="reset">Reinicia el nivel</string>
     <string name="search">Buscar</string>
@@ -22,4 +22,7 @@
     <string name="definition">Definición</string>
     <string name="examples">Ejemplos</string>
     <string name="no_results">Palabra no encontrada</string>
+    <string name="language">Idioma</string>
+    <string name="records">Récords</string>
+    <string name="select_language">Seleccione el idioma</string>
 </resources>

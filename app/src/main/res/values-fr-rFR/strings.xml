@@ -14,7 +14,7 @@
     <string name="level_hard">Difficile</string>
     <string name="error_matchup">Erreur !</string>
     <string name="loading">Chargeant . . .</string>
-    <string name="record">"Record: "</string>
+    <string name="record">"Record : "</string>
     <string name="ups">Il semble que nous soyons à court de mots... Essayez de nouveau dans quelques secondes.</string>
     <string name="reset">Réinitialiser le niveau</string>
     <string name="search">Recherchez</string>
@@ -22,4 +22,7 @@
     <string name="definition">Définition</string>
     <string name="no_results">Mot non trouvé</string>
     <string name="examples">Exemples</string>
+    <string name="language">Langue</string>
+    <string name="records">Record</string>
+    <string name="select_language">Sélectionnez une langue</string>
 </resources>
