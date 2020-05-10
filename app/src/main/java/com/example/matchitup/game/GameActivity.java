@@ -201,15 +201,15 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 changePage(pagePosition);
             }
         } else if(pagePosition == DEFINITIONS_VIEW){
-            // Se ha pulsado una definicion previamente
+            // Se ha pulsado una definition previamente
             if(game.isCheckedDefinition()){
                 if(game.getChosenDefinition().equals(infoButton)) {
-                    // Se aprieta la misma definicion para cancelarla
+                    // Se aprieta la misma definition para cancelarla
                     game.setCheckedDefinition(checked);
                     game.setChosenDefinition("");
                     ((ToggleButton) view).setChecked(false);
                 } else {
-                    // Se aprieta una definicion distinta de la misma pagina
+                    // Se aprieta una definition distinta de la misma pagina
                     ((ToggleButton) view).setChecked(false);
                     changePage(pagePosition);
                 }
@@ -364,7 +364,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
          */
         @Override
         public void onLoadFinished(@NonNull Loader<List<Word>> loader, List<Word> data) {
-            // TODO: Comprobar primero que no haya ninguna palabra o definicion a null (Error 429)
+            // TODO: Comprobar primero que no haya ninguna palabra o definition a null (Error 429)
 
             if (data != null) {
                 game.updateWords(data);

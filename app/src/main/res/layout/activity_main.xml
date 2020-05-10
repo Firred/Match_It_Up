@@ -49,7 +49,6 @@
                 app:itemIconTint="@drawable/selector_menu_navigation"
                 app:menu="@menu/menu_navigation"
                 android:layout_gravity="center">
-
             </com.google.android.material.bottomnavigation.BottomNavigationView>
 
         </LinearLayout>

@@ -17,4 +17,9 @@
     <string name="record">"Record : "</string>
     <string name="ups">We seem to have run out of words... Try again in a few seconds.</string>
     <string name="reset">Reset the level</string>
+    <string name="search">Search</string>
+    <string name="search_message">Type your word here</string>
+    <string name="definition">Definition</string>
+    <string name="examples">Examples</string>
+    <string name="no_results">Word not found</string>
 </resources>

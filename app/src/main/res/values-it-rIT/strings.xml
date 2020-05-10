@@ -17,4 +17,9 @@
     <string name="record">"Record : "</string>
     <string name="ups">Sembra che abbiamo finito le parole... Riprova tra qualche secondo.</string>
     <string name="reset">Azzerare il livello</string>
+    <string name="search">Ricerca</string>
+    <string name="search_message">Scrivi qui la tua parola</string>
+    <string name="definition">Definizione</string>
+    <string name="no_results">Parola non trovata</string>
+    <string name="examples">Esempi</string>
 </resources>

@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DictionaryActivity" />
+        <activity android:name=".dictionary.DictionaryActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".game.GameActivity" />
         <activity android:name=".MainActivity">
