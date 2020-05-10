@@ -121,7 +121,15 @@
                 android:background="@color/verdeClaro"/>
 
             <TextView
-                android:id="@+id/examplesView"
+                android:id="@+id/exampleOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/raleway" />
+
+            <TextView
+                android:id="@+id/exampleTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

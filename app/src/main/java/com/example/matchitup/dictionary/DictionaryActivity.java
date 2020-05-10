@@ -42,7 +42,7 @@ public class DictionaryActivity extends AppCompatActivity {
     private final String STATE_AUDIO = "audio";
     private final String STATE_EXAMPLES = "examples";
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
-    private TextView description, examples, noResults, searchText;
+    private TextView description, example1, example2, noResults, searchText;
     private CardView cardViewDefinition, cardViewExamples;
     private LinearLayout layoutDictionary;
     private ImageButton audio;
@@ -87,7 +87,9 @@ public class DictionaryActivity extends AppCompatActivity {
                 } else {
                     configSearch(1f, 0.5f, R.drawable.gradient_menu);
                     layoutDictionary.setBackgroundResource(R.color.white);
-                    prepareResultsToUser();
+                    if(description.getText() != "") {
+                        prepareResultsToUser();
+                    }
                     searchView.setIconified(true);
                 }
             }
@@ -111,7 +113,8 @@ public class DictionaryActivity extends AppCompatActivity {
         this.cardViewDefinition = findViewById(R.id.cardViewDefinition);
         this.cardViewExamples = findViewById(R.id.cardViewExamples);
         this.description = findViewById(R.id.descriptionView);
-        this.examples = findViewById(R.id.examplesView);
+        this.example1 = findViewById(R.id.exampleOne);
+        this.example2 = findViewById(R.id.exampleTwo);
         this.noResults = findViewById(R.id.noResults);
         this.audio = findViewById(R.id.audioButton);
 
@@ -120,8 +123,10 @@ public class DictionaryActivity extends AppCompatActivity {
             this.description.setText(savedInstanceState.getString(STATE_DESC));
 
             this.examplesList = savedInstanceState.getStringArrayList(STATE_EXAMPLES);
-            if (examplesList != null)
-                this.examples.setText(examplesList.toString());
+            if (examplesList != null) {
+                example1.setText(examplesList.get(0));
+                example2.setText(examplesList.get(1));
+            }
 
             audioUrl = savedInstanceState.getString(STATE_AUDIO);
 
@@ -220,7 +225,8 @@ public class DictionaryActivity extends AppCompatActivity {
                     description.setText(w.getDef());
                     if (w.getExamples() != null) {
                         examplesList = w.getExamples();
-                        examples.setText(examplesList.toString());
+                        example1.setText(examplesList.get(0));
+                        example2.setText(examplesList.get(1));
                     }
                     if (w.getAudio() != null) {
                         audioUrl = w.getAudio();
@@ -249,7 +255,8 @@ public class DictionaryActivity extends AppCompatActivity {
         public void onLoaderReset(@NonNull Loader<List<Word>> loader) {
             loader.reset();
             description.setText("");
-            examples.setText("");
+            example1.setText("");
+            example2.setText("");
             audioUrl = "";
         }
     }
