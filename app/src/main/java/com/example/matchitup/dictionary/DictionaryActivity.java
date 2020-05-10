@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,14 +25,17 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.matchitup.LocaleManager;
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class DictionaryActivity extends AppCompatActivity {
+    private final String STATE_LANGUAGE = "language";
     private DictionaryLoaderCallbacks bookLoaderCallbacks = new DictionaryLoaderCallbacks();
     private TextView definitionTitle, examplesTitle, description, examples, noResults, searchText;
     private CardView cardViewDefinition, cardViewExamples;
@@ -53,6 +57,11 @@ public class DictionaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            LocaleManager.setLocale(this, savedInstanceState.getString(STATE_LANGUAGE));
+        }
+
         setContentView(R.layout.activity_dictionary);
 
 
@@ -226,5 +235,13 @@ public class DictionaryActivity extends AppCompatActivity {
      */
     protected void destroyLoader(int id) {
         LoaderManager.getInstance(this).destroyLoader(id);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_LANGUAGE,
+                this.getSharedPreferences("matchPref", Context.MODE_PRIVATE)
+                        .getString("language_key", Locale.getDefault().getLanguage()));
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

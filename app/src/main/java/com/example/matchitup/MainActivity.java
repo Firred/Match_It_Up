@@ -101,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
         YoYo.with(Techniques.Landing).duration(1700).repeat(0).playOn(findViewById(R.id.logo));
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (popUpPlayMenu != null) {
+            popUpPlayMenu.dismiss();
+            popUpPlayMenu = null;
+        }
+    }
+
     private int convertDpToPx(int dp){
         return Math.round(dp*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
     }
@@ -212,8 +221,5 @@ public class MainActivity extends AppCompatActivity {
         public void destroyItem(ViewGroup container, int position, Object object){
             container.removeView((LinearLayout) object);
         }
-
     }
-
-
 }
