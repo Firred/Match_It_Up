@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
-    private final String STATE_LANGUAGE = "language";
+    private final String STATE_LANGUAGE = "language", STATE_EASY = "language",
+            STATE_MEDIUM = "language", STATE_HARD = "language";
     private Spinner spinner;
     private String currentLanguage;
     private List<String> availableLanguages;
@@ -43,7 +44,21 @@ public class ProfileActivity extends AppCompatActivity {
         hardRecord = findViewById(R.id.hardRecord);
 
         //TODO: RECUPERAR RECORDS Y HACER SET AQUI
-        setRecords(5, 15, 25);
+        if (savedInstanceState != null) {
+            setRecords(savedInstanceState.getString(STATE_EASY),
+                    savedInstanceState.getString(STATE_MEDIUM),
+                    savedInstanceState.getString(STATE_HARD));
+        }
+        else {
+            setRecords(
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).
+                            getInt("easy", 0),
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).
+                            getInt("medium", 0),
+                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).
+                            getInt("hard", 0)
+            );
+        }
 
     }
 
@@ -72,6 +87,12 @@ public class ProfileActivity extends AppCompatActivity {
         easyRecord.setText(getString(R.string.level_easy) + ": " + easy);
         mediumRecord.setText(getString(R.string.level_medium) + ": " + medium);
         hardRecord.setText(getString(R.string.level_hard) + ": " + hard);
+    }
+
+    private void setRecords(String easy, String medium, String hard){
+        easyRecord.setText(easy);
+        mediumRecord.setText(medium);
+        hardRecord.setText(hard);
     }
 
     private void setupSpinner(){
@@ -105,8 +126,13 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(
-                STATE_LANGUAGE, this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).getString("language_key", Locale.getDefault().getLanguage())
+                STATE_LANGUAGE, this.getSharedPreferences("matchPref",
+                        Context.MODE_PRIVATE).getString("language_key",
+                        Locale.getDefault().getLanguage())
         );
+        savedInstanceState.putString(STATE_EASY, easyRecord.getText().toString());
+        savedInstanceState.putString(STATE_MEDIUM, mediumRecord.getText().toString());
+        savedInstanceState.putString(STATE_HARD, hardRecord.getText().toString());
 
         super.onSaveInstanceState(savedInstanceState);
     }
