@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
-    private final String STATE_LANGUAGE = "language", STATE_EASY = "language",
-            STATE_MEDIUM = "language", STATE_HARD = "language";
+    private final String STATE_LANGUAGE = "language", STATE_EASY = "easy",
+            STATE_MEDIUM = "medium", STATE_HARD = "hard";
     private Spinner spinner;
     private String currentLanguage;
     private List<String> availableLanguages;
