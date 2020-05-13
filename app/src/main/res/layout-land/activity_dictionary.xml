@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dictionary.DictionaryActivity"
+    android:orientation="vertical"
+    android:id="@+id/layoutDictionary">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/gradient_menu">
+
+        <ImageButton
+            android:id="@+id/audioButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="playAudio"
+            app:srcCompat="@drawable/ic_sound"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/searchText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="@string/search"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/raleway_semibold"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutDirection="rtl"
+            android:layout_weight="1"
+            app:searchIcon="@drawable/ic_search"
+            android:background="@drawable/gradient_menu"
+            app:queryHint="@string/search_message"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_results"
+        android:textSize="25sp"
+        android:fontFamily="@font/raleway_semibold"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewDefinition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:visibility="gone"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/definitionTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/verdeClaro"
+                        android:fontFamily="@font/raleway_semibold"
+                        android:padding="10dp"
+                        android:text="@string/definition"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/descriptionView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway"
+                        android:padding="10dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewExamples"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:visibility="gone"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/examplesTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/verdeClaro"
+                        android:fontFamily="@font/raleway_semibold"
+                        android:padding="10dp"
+                        android:text="@string/examples"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/exampleOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway"
+                        android:padding="10dp"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/exampleTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway"
+                        android:padding="10dp"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,10 +1,14 @@
 package com.example.matchitup.game;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -27,6 +31,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private static final int DEFINITIONS_VIEW = 1;
     private Context context;
     private LayoutInflater layoutInflater;
+    private Dialog popUpDef;
     private Map<String, String> word_definition;
 
 
@@ -65,7 +70,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     @Override
     public Object instantiateItem(ViewGroup container, final int position){
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.game_views, container, false);
+        final View view = layoutInflater.inflate(R.layout.game_views, container, false);
         List<ToggleButton> buttons = new ArrayList<>();
         buttons.add((ToggleButton) view.findViewById(R.id.button0));
         buttons.add((ToggleButton) view.findViewById(R.id.button1));
@@ -73,6 +78,10 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         buttons.add((ToggleButton) view.findViewById(R.id.button3));
         buttons.add((ToggleButton) view.findViewById(R.id.button4));
 
+        popUpDef = new Dialog(context);
+        final View def_dial = layoutInflater.inflate(R.layout.definition_dialog, container, false);
+        popUpDef.setContentView(def_dial);
+        popUpDef.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         List shuffled;
         if(position == WORDS_VIEW){
@@ -83,6 +92,19 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
             shuffled = new ArrayList<>(word_definition.values());
             Collections.shuffle(shuffled);
             prepareButtons(buttons, shuffled, position);
+
+            for(final ToggleButton btn : buttons) {
+                btn.setOnLongClickListener(new View.OnLongClickListener() {
+                   @Override
+                   public boolean onLongClick(View v) {
+                       TextView textView = def_dial.findViewById(R.id.defText);
+                       textView.setText(btn.getText());
+                       popUpDef.show();
+
+                       return true;
+                   }
+               });
+            }
         }
 
         container.addView(view);
