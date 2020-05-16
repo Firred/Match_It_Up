@@ -29,6 +29,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.eftimoff.viewpagertransformers.*;
 import com.example.matchitup.dictionary.DictionaryActivity;
 import com.example.matchitup.game.GameActivity;
+import com.example.matchitup.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Locale;

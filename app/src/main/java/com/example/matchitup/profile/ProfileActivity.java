@@ -1,4 +1,4 @@
-package com.example.matchitup;
+package com.example.matchitup.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.matchitup.LocaleManager;
+import com.example.matchitup.MainActivity;
+import com.example.matchitup.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
