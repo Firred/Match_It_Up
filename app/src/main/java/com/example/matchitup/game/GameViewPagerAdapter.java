@@ -34,27 +34,50 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private Dialog popUpDef;
     private Map<String, String> word_definition;
 
-
+    /**
+     * GameViewPagerAdapter Constructor
+     * @param context Application context
+     */
     public GameViewPagerAdapter(Context context){
         this.context = context;
     }
 
+    /**
+     * Get the count of current pages used by the adapter
+     * @return Integer representing the number of pages
+     */
     @Override
     public int getCount() {
         return VIEWS;
     }
 
+    /**
+     * Function used by the adapter which checks whether a view correspond to a specific object
+     * @param view
+     * @param object
+     * @return Boolean representing the state
+     */
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == (LinearLayout) object;
     }
 
+    /**
+     * Method which is called when the observable notify to make changes
+     * @param observable Object representing which observable has been the notifier
+     */
     @Override
     public void update(Observable observable, Object arg) {
         Game game = (Game)observable;
         word_definition = game.getWordMap();
     }
 
+    /**
+     * Private function responsible for getting ready all the buttons used inside the game
+     * @param buttons List of Toggle Buttons
+     * @param infoToInsert Collection of information to be displayed on the buttons
+     * @param position Integer which symbolizes the ViewPager's position
+     */
     private void prepareButtons(List<ToggleButton> buttons, Collection<String> infoToInsert, int position){
         int i = 0;
         for(String info : infoToInsert) {
@@ -67,6 +90,13 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         }
     }
 
+    /**
+     * This is the most important function in this class. It's responsible for instantiate each page used
+     * inside the game, with the appropriate information
+     * @param container ViewGroup where the views are instantiated
+     * @param position Page to be instantiated
+     * @return Instantiated view
+     */
     @Override
     public Object instantiateItem(ViewGroup container, final int position){
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
@@ -111,6 +141,12 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         return view;
     }
 
+    /**
+     * Function called when the ViewPagerAdapter is removed
+     * @param container ViewGroup where the views are deleted
+     * @param position Page to be deleted
+     * @param object Object to be deleted
+     */
     @Override
     public void destroyItem(ViewGroup container, int position, Object object){
         container.removeView((LinearLayout) object);

@@ -1,7 +1,9 @@
-package com.example.matchitup;
+package com.example.matchitup.dictionary;
 
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.matchitup.BuildConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +22,12 @@ public class DictionaryService {
     private static final String DEBUG_TAG = DictionaryService.class.getSimpleName();
     private static final String BASE_URL = "http://api.wordnik.com/v4/";
 
+    /**
+     * Private method responsible for converting an InputStream object into a String
+     * @param stream InputStream
+     * @return String
+     * @throws IOException
+     */
     private static String convertInputToString(InputStream stream) throws IOException {
         BufferedReader reader;
         reader = new BufferedReader(new InputStreamReader(stream,"UTF-8"));
@@ -32,7 +40,23 @@ public class DictionaryService {
         return result;
     }
 
+    /**
+     * This method is responsible for parsing a string and removing all the HTML or XML tags contained
+     * on it
+     * @param input String to be parsed
+     * @return
+     */
+    private static String parseString(String input){
+        return input.replaceAll("\\<.*?\\>", "");
+    }
 
+    /**
+     * This private function receive an URL in string format, and perform the corresponding HTTP request
+     * to get the information from the API
+     * @param myurl String representing the URI
+     * @return String representing the JSON
+     * @throws IOException
+     */
     private static String downloadUrl(String myurl) throws IOException {
         InputStream responseBody = null;
         HttpURLConnection conn = null;
@@ -162,6 +186,7 @@ public class DictionaryService {
 
                         if (json.has("text")) {
                             example = json.getString("text");
+                            example = parseString(example);
 
                             examples.add(example);
                         }
@@ -201,7 +226,8 @@ public class DictionaryService {
                     JSONObject audioJson = data.getJSONObject(i);
 
                     if (audioJson.has("text")) {
-                        definition = audioJson.getString("text");
+                        String textDefinition = audioJson.getString("text");
+                        definition = parseString(textDefinition);
                         found = true;
                     }
                 }
@@ -214,4 +240,6 @@ public class DictionaryService {
 
         return definition;
     }
+
+
 }
