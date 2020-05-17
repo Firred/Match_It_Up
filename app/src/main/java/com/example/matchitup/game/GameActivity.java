@@ -5,18 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
-import androidx.viewpager.widget.ViewPager;
-
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,15 +23,12 @@ import android.widget.ToggleButton;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.matchitup.CustomViewPager;
-
-import com.eftimoff.viewpagertransformers.CubeOutTransformer;
 import com.example.matchitup.LocaleManager;
 import com.example.matchitup.R;
 import com.example.matchitup.Word;
 import com.example.matchitup.WordLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
@@ -58,6 +50,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private Dialog popUpNotification;
 
 
+    /**
+     * Method which is called when an activity is created
+     * @param savedInstanceState Bundle with past states of variables
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +95,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * Method which is called when the observable notify to make changes
+     * @param observable Object representing which observable has been the notifier
+     */
     @Override
     public void update(Observable observable, Object arg) {
         if (observable instanceof Game) {
@@ -119,6 +119,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * Method which is called when the activity is destroyed
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -134,9 +137,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * Private method responsible for initializing all interface views
+     */
     private void initializeViews(){
         gameViewPager = findViewById(R.id.viewPagerGame);
-        //gameViewPager.setPageTransformer(true, new CubeOutTransformer());
         gameViewPager.setTime(250);
         gameViewPagerAdapter = new GameViewPagerAdapter(this);
         popUpNotification = new Dialog(this);
@@ -153,6 +158,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * Private method responsible for showing a notification when the information to be displayed
+     * on the screen is incomplete
+     */
     private void showNotification(){
         popUpNotification.setContentView(R.layout.notification_layout);
         popUpNotification.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -161,6 +170,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     }
 
+    /**
+     * Private method responsible for checking whether there is internet connection available on the
+     * device
+     * @return Boolean representing the state
+     */
     private boolean internetConnectionAvailable(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = null;
@@ -170,10 +184,18 @@ public class GameActivity extends AppCompatActivity implements Observer {
         return activeNetwork != null && activeNetwork.isConnected();
     }
 
+    /**
+     * Public method which is executed when a game round is finished and the user is asking for
+     * more words
+     */
     public void onRequestNewWords(View view){
         requestNewWords();
     }
 
+    /**
+     * Private method responsible for requesting more words, by checking the internet connection and
+     * performing the call to the API through the Loader
+     */
     private void requestNewWords(){
         if (internetConnectionAvailable()) {
             Bundle queryBundle = new Bundle();
@@ -284,8 +306,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     pointsString.setText(getString(R.string.record));
                     YoYo.with(Techniques.DropOut).duration(1300).repeat(0).playOn(findViewById(R.id.points));
                 }
-
-
                 // Realiza la animación de cambiar los colores a correcto
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
                         R.drawable.grad_bg_game_correct, R.drawable.gradient_menu_game_correct, R.drawable.gradient_menu_game_correct_inverse,
@@ -312,8 +332,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    // True: Enable
-    // False: Disable
+    /**
+     * Private method responsible for enabling or disabling the interface when an animation is being
+     * performed
+     * @param value Boolean with the state: True for enabling, false for disabling
+     */
     private void enableOrDisableLayout(boolean value){
         LinearLayout layout = findViewById(R.id.layoutToggleButtons);
         for (int i = 0; i < layout.getChildCount(); i++) {
@@ -323,18 +346,30 @@ public class GameActivity extends AppCompatActivity implements Observer {
         gameViewPager.setPagingEnabled(value);
     }
 
-
+    /**
+     * Private method responsible for animating the interface on correct or error states
+     * @param bgLayout Game's background layout
+     * @param topLayout Game's top layout
+     * @param bottomLayout Game's bottom layout
+     * @param background Game's background layout id
+     * @param top Game's top layout id
+     * @param bottom Game's bottom layout id
+     * @param state String to be displayed on correct or error state
+     * @param stateAnimation Technique representing the animation to be performed
+     */
     private void animateCorrectOrError(LinearLayout bgLayout, LinearLayout topLayout, LinearLayout bottomLayout,
                                        int background, int top, int bottom, String state, Techniques stateAnimation){
 
         changeLayout(bgLayout, background, topLayout, top, bottomLayout, bottom, state);
 
-
         YoYo.with(stateAnimation).duration(1000).repeat(0).playOn(findViewById(R.id.gameState));
         YoYo.with(Techniques.DropOut).duration(1300).repeat(0).playOn(findViewById(R.id.pointsNumber));
     }
 
-
+    /**
+     * Private method responsible for changing the GameViewPager's current page
+     * @param pagePosition
+     */
     private void changePage(int pagePosition){
         if(pagePosition == WORDS_VIEW){
             gameViewPager.setCurrentItem(DEFINITIONS_VIEW);
@@ -344,6 +379,16 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * Private method responsible for changing the game's layout
+     * @param bgLayout Game's background layout
+     * @param topLayout Game's top layout
+     * @param bottomLayout Game's bottom layout
+     * @param background Game's background layout id
+     * @param top Game's top layout id
+     * @param bottom Game's bottom layout id
+     * @param state String to be displayed on correct or error state
+     */
     private void changeLayout(LinearLayout bgLayout, int background, LinearLayout topLayout, int top,
                               LinearLayout bottomLayout, int bottom, String state){
         bgLayout.setBackgroundResource(background);
@@ -359,8 +404,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
 
         /**
-         * Si al llamar a initLoader() en onCreate() de MainActivity el ID no existe, se ejecuta esta
-         * función. Si existía, borra el loader que había y vuelve aquí.
+         * This function will be executed when a Loader has to be created
+         * @return Loader<List<Word>> Loader instanciado con una lista de palabras
          */
         @Override
         public Loader<List<Word>> onCreateLoader(int id, @Nullable Bundle args) {
@@ -370,16 +415,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
 
         /**
-         * Si en initLoader() del onCreate de MainActivity existiera el ID y ya ha generado datos, se
-         * llama a esta función ya que significa que habría otro loader creado con el mismo ID.
-         *
-         * Esta función se ejecuta también cuando un Loader previo se ha terminado. Este suele ser el
-         * punto en el que mueve los datos a las View mediante el adapter. La ejecución del
-         * loadInBackground() pasa a esta función.
+         * This function will be executed when a Loader has finished its task
+         * @param loader
+         * @param data Data returned by the task executed
          */
         @Override
         public void onLoadFinished(@NonNull Loader<List<Word>> loader, List<Word> data) {
-            // TODO: Comprobar primero que no haya ninguna palabra o definition a null (Error 429)
 
             if (data != null) {
                 game.updateWords(data);
@@ -392,17 +433,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
 
         /**
-         * Cuando un Loader previamente creado se está resetando. En este punto la app debería eliminar
-         * cualquier referencia que tenga de los datos del Loader.
-         *
-         * Esta función se llama solamente cuando el Loader actual se está destruyendo, por lo que se puede
-         * dejar en blanco la mayoría del tiempo. No intentaremos acceder a datos después de hayan sido
-         * borrados
+         * This function is called when the loader has a reset
+         * @param loader
          */
         @Override
         public void onLoaderReset(@NonNull Loader<List<Word>> loader) {
             loader.reset();
-            //TODO: Se podría actulizar la interfaz (eliminar las palabras y descripciones). OPCIONAL
         }
     }
 
@@ -415,6 +451,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
         LoaderManager.getInstance(this).destroyLoader(id);
     }
 
+    /**
+     * This function is called when there's any change on the device and the current state must be
+     * preserved
+     * @param savedInstanceState
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(STATE_LANGUAGE,

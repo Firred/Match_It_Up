@@ -6,6 +6,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
+import com.example.matchitup.dictionary.DictionaryService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +42,20 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
         this.optionalParams = optionalParams;
     }
 
+    /**
+     * This function will normally be called for you automatically when the associated
+     * fragment/activity is being started.
+     */
     protected void onStartLoading() {
         forceLoad();
     }
 
-
+    /**
+     * This function will perform the necessary requests to retrieve the information associated to
+     * a certain word
+     * @param wordQuery Word to be searched
+     * @return List of words
+     */
     private List<Word> loadWord(String wordQuery) {
         List<Word> data = new ArrayList<>();
         String def = DictionaryService.getDefinition(wordQuery);
@@ -58,6 +69,12 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
         return data;
     }
 
+    /**
+     * This function will perform the necessary requests to retrieve the information associated to
+     * load RandomLimit words in a list
+     * @param randomLimit Number of words to be searched
+     * @return List of words
+     */
     private List<Word> loadRandom(int randomLimit) {
         List<String> words = null;
         List<Word> data = new ArrayList<>();
@@ -78,6 +95,10 @@ public class WordLoader extends AsyncTaskLoader<List<Word>> {
         return data;
     }
 
+    /**
+     *  Called on a worker thread to perform the actual load and to return the result of the load operation.
+     * @return List of words
+     */
     @Override
     @Nullable
     public List<Word> loadInBackground() {

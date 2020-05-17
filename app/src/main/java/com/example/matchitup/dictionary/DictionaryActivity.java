@@ -46,15 +46,10 @@ public class DictionaryActivity extends AppCompatActivity {
     private SearchView searchView;
 
 
-    private boolean internetConnectionAvailable(){
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = null;
-        if (connMgr != null) {
-            activeNetwork = connMgr.getActiveNetworkInfo();
-        }
-        return activeNetwork != null && activeNetwork.isConnected();
-    }
-
+    /**
+     * Method which is called when an activity is created
+     * @param savedInstanceState Bundle with past states of variables
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +134,24 @@ public class DictionaryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Private method responsible for checking whether there is internet connection available on the
+     * device
+     * @return Boolean representing the state
+     */
+    private boolean internetConnectionAvailable(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = null;
+        if (connMgr != null) {
+            activeNetwork = connMgr.getActiveNetworkInfo();
+        }
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    /**
+     * Function responsible for receiving a word and using a loader to search it in background
+     * @param query word to be searched
+     */
     public void searchWord(String query) {
 
         if(internetConnectionAvailable() && (query.length() != 0)) {
@@ -151,6 +164,10 @@ public class DictionaryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Function responsible for playing an audio with the pronunciation of a certain word
+     * @param view
+     */
     public void playAudio(View view) {
         MediaPlayer mp = new MediaPlayer();
 
@@ -163,6 +180,12 @@ public class DictionaryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Private method responsible for configuring the SearchView layout
+     * @param weightSearchView float representing the weight in a LinearLayout for the SearchView
+     * @param weightTitle float representing the weight in a LinearLayout for the title
+     * @param background Integer representing the background's ID
+     */
     private void configSearch(float weightSearchView, float weightTitle, int background){
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -177,9 +200,13 @@ public class DictionaryActivity extends AppCompatActivity {
                 weightTitle
         );
         searchText.setLayoutParams(param);
-
     }
 
+    /**
+     * This function is responsible for displaying feedback to the user if a certain query is not
+     * solved successfully
+     * @param info String to be displayed as information to the user
+     */
     public void feedbackToUser(String info){
         cardViewDefinition.setVisibility(View.GONE);
         cardViewExamples.setVisibility(View.GONE);
@@ -187,6 +214,9 @@ public class DictionaryActivity extends AppCompatActivity {
         noResults.setText(info);
     }
 
+    /**
+     * This method prepare the layout to show the results to the user
+     */
     public void prepareResultsToUser(){
         cardViewDefinition.setVisibility(View.VISIBLE);
         cardViewExamples.setVisibility(View.VISIBLE);
@@ -199,8 +229,8 @@ public class DictionaryActivity extends AppCompatActivity {
         public static final String PARAM_QUERY = "queryParam";
 
         /**
-         * Si al llamar a initLoader() en onCreate() de MainActivity el ID no existe, se ejecuta esta
-         * función. Si existía, borra el loader que había y vuelve aquí.
+         * This function will be executed when a Loader has to be created
+         * @return Loader<List<Word>> Loader instanciado con una lista de palabras
          */
         @Override
         public Loader<List<Word>> onCreateLoader(int id, @Nullable Bundle args) {
@@ -208,12 +238,9 @@ public class DictionaryActivity extends AppCompatActivity {
         }
 
         /**
-         * Si en initLoader() del onCreate de MainActivity existiera el ID y ya ha generado datos, se
-         * llama a esta función ya que significa que habría otro loader creado con el mismo ID.
-         *
-         * Esta función se ejecuta también cuando un Loader previo se ha terminado. Este suele ser el
-         * punto en el que mueve los datos a las View mediante el adapter. La ejecución del
-         * loadInBackground() pasa a esta función.
+         * This function will be executed when a Loader has finished its task
+         * @param loader
+         * @param data Data returned by the task executed
          */
         @Override
         public void onLoadFinished(@NonNull Loader<List<Word>> loader, List<Word> data) {
@@ -247,12 +274,8 @@ public class DictionaryActivity extends AppCompatActivity {
         }
 
         /**
-         * Cuando un Loader previamente creado se está resetando. En este punto la app debería eliminar
-         * cualquier referencia que tenga de los datos del Loader.
-         *
-         * Esta función se llama solamente cuando el Loader actual se está destruyendo, por lo que se puede
-         * dejar en blanco la mayoría del tiempo. No intentaremos acceder a datos después de hayan sido
-         * borrados
+         * This function is called when the loader has a reset
+         * @param loader
          */
         @Override
         public void onLoaderReset(@NonNull Loader<List<Word>> loader) {
@@ -273,6 +296,11 @@ public class DictionaryActivity extends AppCompatActivity {
         LoaderManager.getInstance(this).destroyLoader(id);
     }
 
+    /**
+     * This function is called when there's any change on the device and the current state must be
+     * preserved
+     * @param savedInstanceState
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(STATE_LANGUAGE,

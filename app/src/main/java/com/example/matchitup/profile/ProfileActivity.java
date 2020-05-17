@@ -1,4 +1,4 @@
-package com.example.matchitup;
+package com.example.matchitup.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.matchitup.LocaleManager;
+import com.example.matchitup.MainActivity;
+import com.example.matchitup.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +32,10 @@ public class ProfileActivity extends AppCompatActivity {
     private List<String> availableLanguages;
     private TextView easyRecord, mediumRecord, hardRecord;
 
+    /**
+     * Method which is called when an activity is created
+     * @param savedInstanceState Bundle with past states of variables
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,20 +51,19 @@ public class ProfileActivity extends AppCompatActivity {
         mediumRecord = findViewById(R.id.mediumRecord);
         hardRecord = findViewById(R.id.hardRecord);
 
-        //TODO: RECUPERAR RECORDS Y HACER SET AQUI
+
         if (savedInstanceState != null) {
             setRecords(savedInstanceState.getString(STATE_EASY),
                     savedInstanceState.getString(STATE_MEDIUM),
                     savedInstanceState.getString(STATE_HARD));
         }
         else {
-            setRecords(
-                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).
-                            getInt("easy", 0),
-                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).
-                            getInt("medium", 0),
-                    this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).
-                            getInt("hard", 0)
+            setRecords(getString(R.string.level_easy) + ": " +
+                            this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).getInt("easy", 0),
+                    getString(R.string.level_medium) + ": " +
+                            this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).getInt("medium", 0),
+                    getString(R.string.level_hard) + ": " +
+                            this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).getInt("hard", 0)
             );
         }
 
@@ -81,20 +88,21 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-
-    @SuppressLint("SetTextI18n")
-    private void setRecords(int easy, int medium, int hard){
-        easyRecord.setText(getString(R.string.level_easy) + ": " + easy);
-        mediumRecord.setText(getString(R.string.level_medium) + ": " + medium);
-        hardRecord.setText(getString(R.string.level_hard) + ": " + hard);
-    }
-
+    /**
+     * Private method responsible for setting the user's records on the screen
+     * @param easy String representing the record in easy level
+     * @param medium String representing the record in medium level
+     * @param hard String representing the record in hard level
+     */
     private void setRecords(String easy, String medium, String hard){
         easyRecord.setText(easy);
         mediumRecord.setText(medium);
         hardRecord.setText(hard);
     }
 
+    /**
+     * Method responsible for configuring the spinner
+     */
     private void setupSpinner(){
         availableLanguages = new ArrayList<>(Arrays.asList(
                 getString(R.string.select_language), "English", "Español",
@@ -123,6 +131,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function is called when there's any change on the device and the current state must be
+     * preserved
+     * @param savedInstanceState
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(

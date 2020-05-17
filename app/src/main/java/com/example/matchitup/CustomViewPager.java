@@ -15,12 +15,22 @@ public class CustomViewPager extends ViewPager {
     private boolean enabled;
     private int time;
 
+    /**
+     * CustomViewPager constructor
+     * @param context Application context
+     * @param attrs
+     */
     public CustomViewPager(Context context, AttributeSet attrs){
         super(context, attrs);
         this.enabled = true;
         setMyScroller();
     }
 
+    /**
+     * Method which is called when the user has performed a touch on the ViewPager
+     * @param event
+     * @return Boolean representing the state
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event){
         if(this.enabled){
@@ -29,6 +39,11 @@ public class CustomViewPager extends ViewPager {
         return false;
     }
 
+    /**
+     * This method intercept all touch screen motion events.
+     * @param event
+     * @return Boolean representing the state
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event){
         if(this.enabled){
@@ -37,18 +52,34 @@ public class CustomViewPager extends ViewPager {
         return false;
     }
 
+    /**
+     * Called when it's necessary to block the viewpager for not to receive any interaction from
+     * the user
+     * @param enabled Boolean representing the state
+     */
     public void setPagingEnabled(boolean enabled){
         this.enabled = enabled;
     }
 
+    /**
+     * Get an integer which represents the milliseconds it takes for the viewpager to move
+     * @return Integer
+     */
     public int getTime() {
         return time;
     }
 
+    /**
+     * Set an integer which represents the milliseconds it takes for the viewpager to move
+     * @return Integer
+     */
     public void setTime(int time) {
         this.time = time;
     }
 
+    /**
+     * Private method responsible for setting a scroller on this ViewPager
+     */
     private void setMyScroller() {
         try {
             Class<?> viewpager = ViewPager.class;
