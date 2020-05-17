@@ -2,7 +2,6 @@ package com.example.matchitup.dictionary;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -15,10 +14,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -120,22 +115,27 @@ public class DictionaryActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             this.searchText.setText(savedInstanceState.getString(STATE_WORD));
-            this.description.setText(savedInstanceState.getString(STATE_DESC));
 
-            this.examplesList = savedInstanceState.getStringArrayList(STATE_EXAMPLES);
-            if (examplesList != null) {
-                example1.setText(examplesList.get(0));
-                example2.setText(examplesList.get(1));
+            String desc = savedInstanceState.getString(STATE_DESC);
+
+            if(desc != null && !desc.isEmpty()) {
+                this.description.setText(desc);
+
+                this.examplesList = savedInstanceState.getStringArrayList(STATE_EXAMPLES);
+                if (examplesList != null && !examplesList.isEmpty()) {
+                    example1.setText(examplesList.get(0));
+                    example2.setText(examplesList.get(1));
+                }
+
+                audioUrl = savedInstanceState.getString(STATE_AUDIO);
+
+                if (audioUrl != null && !audioUrl.isEmpty())
+                    audio.setVisibility(View.VISIBLE);
+                else
+                    audio.setVisibility(View.INVISIBLE);
+
+                prepareResultsToUser();
             }
-
-            audioUrl = savedInstanceState.getString(STATE_AUDIO);
-
-            if (audioUrl != null)
-                audio.setVisibility(View.VISIBLE);
-            else
-                audio.setVisibility(View.INVISIBLE);
-
-            prepareResultsToUser();
         }
     }
 
@@ -236,6 +236,9 @@ public class DictionaryActivity extends AppCompatActivity {
                         audio.setVisibility(View.INVISIBLE);
                     }
                 }  else {
+                    description.setText("");
+                    examplesList = null;
+                    audioUrl = "";
                     feedbackToUser(getString(R.string.no_results));
                 }
             }
