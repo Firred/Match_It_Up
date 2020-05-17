@@ -15,6 +15,7 @@ import android.net.NetworkInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -69,6 +70,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
             game.addObserver(gameViewPagerAdapter);
 
             game.forceUpdate();
+
+            if(game.isRoundFinished()) {
+                nextBtnLayout.setVisibility(View.VISIBLE);
+            }
+
+            gameViewPager.setAdapter(gameViewPagerAdapter);
         }
         else {
             Intent intent = getIntent();
@@ -298,9 +305,16 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(associatedButton);
                 //YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(findViewById(pressedButton.getId()));
                 pressedButton.setVisibility(View.INVISIBLE);
+                pressedButton.setOnClickListener(null);
+                associatedButton.setOnClickListener(null);
 
                 game.setCurrentPoints(game.getCurrentPoints() + GAME_POINTS);
                 game.setCorrectWords(game.getCorrectWords() + 1);
+
+                game.getWordMap().remove(game.getChosenWord());
+
+                game.setChosenWord("");
+                game.setChosenDefinition("");
 
                 if(game.isRecord()){
                     pointsString.setText(getString(R.string.record));

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 public class GameViewPagerAdapter extends PagerAdapter implements Observer {
 
@@ -33,6 +35,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private LayoutInflater layoutInflater;
     private Dialog popUpDef;
     private Map<String, String> word_definition;
+    private int wordNumber;
 
     /**
      * GameViewPagerAdapter Constructor
@@ -70,6 +73,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     public void update(Observable observable, Object arg) {
         Game game = (Game)observable;
         word_definition = game.getWordMap();
+        wordNumber = game.getLimitWords();
     }
 
     /**
@@ -81,7 +85,12 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private void prepareButtons(List<ToggleButton> buttons, Collection<String> infoToInsert, int position){
         int i = 0;
         for(String info : infoToInsert) {
-            buttons.get(i).setVisibility(View.VISIBLE);
+            if(info.isEmpty()) {
+                buttons.get(i).setVisibility(View.INVISIBLE);
+                buttons.get(i).setOnClickListener(null);
+            } else
+                buttons.get(i).setVisibility(View.VISIBLE);
+
             buttons.get(i).setText(info);
             buttons.get(i).setTextOn(info);
             buttons.get(i).setTextOff(info);
@@ -115,13 +124,9 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
 
         List shuffled;
         if(position == WORDS_VIEW){
-            shuffled = new ArrayList<>(word_definition.keySet());
-            Collections.shuffle(shuffled);
-            prepareButtons(buttons, shuffled, position);
+            prepareButtons(buttons, generateAndShuffleList(word_definition.keySet()), position);
         } else if (position == DEFINITIONS_VIEW){
-            shuffled = new ArrayList<>(word_definition.values());
-            Collections.shuffle(shuffled);
-            prepareButtons(buttons, shuffled, position);
+            prepareButtons(buttons, generateAndShuffleList(word_definition.values()), position);
 
             for(final ToggleButton btn : buttons) {
                 btn.setOnLongClickListener(new View.OnLongClickListener() {
@@ -150,5 +155,23 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object){
         container.removeView((LinearLayout) object);
+    }
+
+    /**
+     * Generates a Collection from another Collection with its values shuffled and adds empty
+     * Strings in case the Set doesn't contain enough values.
+     * @param data Collection of Strings
+     * @return A shuffled Collection from the data which may contain addition values
+     */
+    private Collection generateAndShuffleList(Collection<String> data) {
+        List shuffled = new ArrayList<>(data);
+
+        for (int i = shuffled.size(); i < wordNumber; i++) {
+            shuffled.add("");
+        }
+
+        Collections.shuffle(shuffled);
+
+        return shuffled;
     }
 }
