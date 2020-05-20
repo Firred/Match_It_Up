@@ -31,7 +31,7 @@ public class DictionaryService {
     private static String convertInputToString(InputStream stream) throws IOException {
         BufferedReader reader;
         reader = new BufferedReader(new InputStreamReader(stream,"UTF-8"));
-        String line = "";
+        String line;
         String result = "";
         while ((line = reader.readLine()) != null){
             result += line;
@@ -44,7 +44,7 @@ public class DictionaryService {
      * This method is responsible for parsing a string and removing all the HTML or XML tags contained
      * on it
      * @param input String to be parsed
-     * @return
+     * @return String parsed
      */
     private static String parseString(String input){
         return input.replaceAll("\\<.*?\\>", "");
@@ -173,7 +173,7 @@ public class DictionaryService {
                 .build();
 
         List<String> examples = new ArrayList<>();
-        String example = "";
+        String example;
         try {
             String info = downloadUrl(builtURI.toString());
 

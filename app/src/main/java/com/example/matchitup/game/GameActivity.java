@@ -15,7 +15,6 @@ import android.net.NetworkInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -71,8 +70,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
             game.forceUpdate();
 
-            if(game.isRoundFinished()) {
+            if(game.isNextRound()) {
                 nextBtnLayout.setVisibility(View.VISIBLE);
+            }
+
+            if(game.getWordMap().isEmpty()) {
+                showNotification();
             }
 
             gameViewPager.setAdapter(gameViewPagerAdapter);
@@ -121,6 +124,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     nextBtnLayout.setVisibility(View.GONE);
                 }
             } else {
+                game.updateWords(new ArrayList<Word>());
                 showNotification();
             }
         }
@@ -140,8 +144,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
             SharedPreferences.Editor editor =
                     this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).edit();
             editor.putInt(game.getGameModeId(), game.getCurrentPoints());
-            editor.commit();
+            editor.apply();
         }
+
+        popUpNotification.dismiss();
     }
 
     /**
@@ -195,7 +201,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Public method which is executed when a game round is finished and the user is asking for
      * more words
      */
-    public void onRequestNewWords(View view){
+    public void  onRequestNewWords(View view){
         requestNewWords();
     }
 
@@ -211,6 +217,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     new ArrayList<Integer>(Arrays.asList(game.getLowFrecuency(), game.getHighFrecuency())));
             LoaderManager.getInstance(this).restartLoader(WORD_LOADER_ID, queryBundle, wordLoaderCallbacks);
             gameState.setText(getString(R.string.loading));
+            game.setCorrectWords(0);
         } else {
             showNotification();
         }
@@ -293,7 +300,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 if(game.isNextRound()){
                     nextBtnLayout.setVisibility(View.VISIBLE);
                     game.setRoundFinished(true);
-                    game.setCorrectWords(0);
                 }
             }
         };
@@ -303,7 +309,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
             if(game.correctPair()){
                 // Animación de dar la vuelta al boton
                 YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(associatedButton);
-                //YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(findViewById(pressedButton.getId()));
                 pressedButton.setVisibility(View.INVISIBLE);
                 pressedButton.setOnClickListener(null);
                 associatedButton.setOnClickListener(null);

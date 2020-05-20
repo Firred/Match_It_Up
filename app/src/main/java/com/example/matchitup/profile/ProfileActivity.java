@@ -2,13 +2,10 @@ package com.example.matchitup.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,9 +24,7 @@ import java.util.Locale;
 public class ProfileActivity extends AppCompatActivity {
     private final String STATE_LANGUAGE = "language", STATE_EASY = "easy",
             STATE_MEDIUM = "medium", STATE_HARD = "hard";
-    private Spinner spinner;
     private String currentLanguage;
-    private List<String> availableLanguages;
     private TextView easyRecord, mediumRecord, hardRecord;
 
     /**
@@ -80,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             SharedPreferences.Editor editor = this.getSharedPreferences("matchPref", Context.MODE_PRIVATE).edit();
             editor.putString("language_key", localeName);
-            editor.commit();
+            editor.apply();
 
             Intent refresh = new Intent(this, MainActivity.class);
             finish();
@@ -104,11 +99,11 @@ public class ProfileActivity extends AppCompatActivity {
      * Method responsible for configuring the spinner
      */
     private void setupSpinner(){
-        availableLanguages = new ArrayList<>(Arrays.asList(
+        List<String> availableLanguages = new ArrayList<>(Arrays.asList(
                 getString(R.string.select_language), "English", "Español",
                 "Français", "Italiano", "Português")
         );
-        spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, availableLanguages);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

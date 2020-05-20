@@ -71,7 +71,6 @@ public class CustomViewPager extends ViewPager {
 
     /**
      * Set an integer which represents the milliseconds it takes for the viewpager to move
-     * @return Integer
      */
     public void setTime(int time) {
         this.time = time;

@@ -1,9 +1,5 @@
 package com.example.matchitup.game;
 
-import android.content.SharedPreferences;
-
-import com.example.matchitup.R;
-
 public class GameFactory implements GameFactoryInterface {
 
     /**

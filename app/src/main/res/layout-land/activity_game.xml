@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_bg_game_normal"
+    tools:context="com.example.matchitup.game.GameActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@drawable/gradient_menu_game_normal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:text="@string/points"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorAccent"
+            android:textSize="17sp"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:id="@+id/pointsNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <com.example.matchitup.CustomViewPager
+        android:id="@+id/viewPagerGame"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/gradient_menu_game_normal_inverse"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gameState"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:fontFamily="@font/bungee"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+        <RelativeLayout
+            android:id="@+id/nextBtnLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:background="@drawable/popup_border"
+                android:fontFamily="@font/bungee"
+                android:onClick="onRequestNewWords"
+                android:text="@string/next_game"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

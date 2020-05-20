@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
 public class GameViewPagerAdapter extends PagerAdapter implements Observer {
 
@@ -32,10 +31,10 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private static final int WORDS_VIEW = 0;
     private static final int DEFINITIONS_VIEW = 1;
     private Context context;
-    private LayoutInflater layoutInflater;
     private Dialog popUpDef;
     private Map<String, String> word_definition;
     private int wordNumber;
+    private View def_dial;
 
     /**
      * GameViewPagerAdapter Constructor
@@ -85,7 +84,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     private void prepareButtons(List<ToggleButton> buttons, Collection<String> infoToInsert, int position){
         int i = 0;
         for(String info : infoToInsert) {
-            if(info.isEmpty()) {
+            if(info == null || info.isEmpty()) {
                 buttons.get(i).setVisibility(View.INVISIBLE);
                 buttons.get(i).setOnClickListener(null);
             } else
@@ -108,7 +107,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
      */
     @Override
     public Object instantiateItem(ViewGroup container, final int position){
-        layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         final View view = layoutInflater.inflate(R.layout.game_views, container, false);
         List<ToggleButton> buttons = new ArrayList<>();
         buttons.add((ToggleButton) view.findViewById(R.id.button0));
@@ -118,11 +117,10 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
         buttons.add((ToggleButton) view.findViewById(R.id.button4));
 
         popUpDef = new Dialog(context);
-        final View def_dial = layoutInflater.inflate(R.layout.definition_dialog, container, false);
+        def_dial = layoutInflater.inflate(R.layout.definition_dialog, container, false);
         popUpDef.setContentView(def_dial);
         popUpDef.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        List shuffled;
         if(position == WORDS_VIEW){
             prepareButtons(buttons, generateAndShuffleList(word_definition.keySet()), position);
         } else if (position == DEFINITIONS_VIEW){
@@ -133,7 +131,9 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
                    @Override
                    public boolean onLongClick(View v) {
                        TextView textView = def_dial.findViewById(R.id.defText);
+                       Log.d("click", btn.getText().toString());
                        textView.setText(btn.getText());
+                       Log.d("click", textView.getText().toString());
                        popUpDef.show();
 
                        return true;
@@ -155,6 +155,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object){
         container.removeView((LinearLayout) object);
+        popUpDef.dismiss();
     }
 
     /**
