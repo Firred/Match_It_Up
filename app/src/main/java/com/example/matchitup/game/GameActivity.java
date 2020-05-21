@@ -15,6 +15,7 @@ import android.net.NetworkInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,7 +36,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class GameActivity extends AppCompatActivity implements Observer {
-    private final String STATE_LANGUAGE = "language", STATE_GAME = "game";
+    private final String STATE_LANGUAGE = "language", STATE_GAME = "game", STATE_NOTIFICATION="not";
     private final int WORD_LOADER_ID = 501;
     private static final int WORDS_VIEW = 0;
     private static final int DEFINITIONS_VIEW = 1;
@@ -72,10 +73,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
             if(game.isNextRound()) {
                 nextBtnLayout.setVisibility(View.VISIBLE);
-            }
-
-            if(game.getWordMap().isEmpty()) {
-                showNotification();
             }
 
             gameViewPager.setAdapter(gameViewPagerAdapter);
@@ -121,7 +118,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
                 if (game.isRoundFinished()) {
                     gameViewPager.setAdapter(gameViewPagerAdapter);
-                    nextBtnLayout.setVisibility(View.GONE);
+
+                    if(!game.isNextRound())
+                        nextBtnLayout.setVisibility(View.GONE);
                 }
             } else {
                 game.updateWords(new ArrayList<Word>());
@@ -217,7 +216,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
                     new ArrayList<Integer>(Arrays.asList(game.getLowFrecuency(), game.getHighFrecuency())));
             LoaderManager.getInstance(this).restartLoader(WORD_LOADER_ID, queryBundle, wordLoaderCallbacks);
             gameState.setText(getString(R.string.loading));
-            game.setCorrectWords(0);
         } else {
             showNotification();
         }
@@ -303,23 +301,24 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 }
             }
         };
+
         if(game.pairSelected()){
             ToggleButton associatedButton = game.getFirstButtonPressed();
 
-            if(game.correctPair()){
+            if(associatedButton == null)
+                return;
+
+            if(game.correctPair() == 1){
                 // Animación de dar la vuelta al boton
                 YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(associatedButton);
                 pressedButton.setVisibility(View.INVISIBLE);
-                pressedButton.setOnClickListener(null);
-                associatedButton.setOnClickListener(null);
+                //pressedButton.setOnClickListener(null);
+                associatedButton.setVisibility(View.INVISIBLE);
 
                 game.setCurrentPoints(game.getCurrentPoints() + GAME_POINTS);
                 game.setCorrectWords(game.getCorrectWords() + 1);
 
                 game.getWordMap().remove(game.getChosenWord());
-
-                game.setChosenWord("");
-                game.setChosenDefinition("");
 
                 if(game.isRecord()){
                     pointsString.setText(getString(R.string.record));
@@ -329,9 +328,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
                         R.drawable.grad_bg_game_correct, R.drawable.gradient_menu_game_correct, R.drawable.gradient_menu_game_correct_inverse,
                         getString(R.string.success_matchup), Techniques.Landing);
-            } else {
+            } else if (game.correctPair() == 0) {
                 game.setCurrentPoints(game.getCurrentPoints() - GAME_POINTS);
-
 
                 // Realiza la animación de cambiar los colores a error
                 animateCorrectOrError(backgroundLayout, topLayout, bottomLayout,
@@ -341,13 +339,21 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
             enableOrDisableLayout(false);
 
+            game.setChosenWord("");
+            game.setChosenDefinition("");
+
+            game.setFirstButtonPressed(null);
+
             handler = new Handler();
             handler.postDelayed(runnable, 2000);
             associatedButton.setChecked(false);
             pressedButton.setChecked(false);
 
         } else{
-            game.setFirstButtonPressed(pressedButton);
+            if (game.getFirstButtonPressed() == null)
+                game.setFirstButtonPressed(pressedButton);
+            else if (game.getFirstButtonPressed() == pressedButton)
+                game.setFirstButtonPressed(null);
         }
     }
 
@@ -443,6 +449,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
             if (data != null) {
                 game.updateWords(data);
+
+                if (!game.getWordMap().isEmpty() && !game.lackOfInfo())
+                    game.setCorrectWords(0);
             }
             else {
                 game.updateWords(new ArrayList<Word>());

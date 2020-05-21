@@ -229,11 +229,17 @@ public abstract class Game extends Observable implements Serializable {
 
     /**
      *  Check whether the user has matched correctly any word with any definition
-     * @return Boolean with the state
+     * @return int 1 if matched correctly, 0 if not, -1 in case the word wasn't found.
      */
-    public boolean correctPair(){
+    public int correctPair(){
         String realDefinition = wordMap.get(chosenWord);
-        return realDefinition.equals(chosenDefinition);
+
+        if (realDefinition != null)
+            return realDefinition.equals(chosenDefinition) ? 1 : 0;
+        else
+            //En caso de que entre en la función si el usuario pulsa demasiado rápido
+            // y la palabra haya sido borrada.
+            return -1;
     }
 
     /**

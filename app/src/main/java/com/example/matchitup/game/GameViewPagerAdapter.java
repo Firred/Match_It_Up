@@ -131,9 +131,7 @@ public class GameViewPagerAdapter extends PagerAdapter implements Observer {
                    @Override
                    public boolean onLongClick(View v) {
                        TextView textView = def_dial.findViewById(R.id.defText);
-                       Log.d("click", btn.getText().toString());
                        textView.setText(btn.getText());
-                       Log.d("click", textView.getText().toString());
                        popUpDef.show();
 
                        return true;
