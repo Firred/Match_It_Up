@@ -15,7 +15,6 @@ import android.net.NetworkInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -115,8 +114,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 points.setText(Integer.toString(game.getCurrentPoints()));
                 level.setText(game.getGameModeString());
                 gameState.setText("");
-
-                Log.d("update", Integer.toString(game.getCorrectWords()));
 
                 if (game.isRoundFinished()) {
                     gameViewPager.setAdapter(gameViewPagerAdapter);
@@ -317,7 +314,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 // Animación de dar la vuelta al boton
                 YoYo.with(Techniques.FlipOutY).duration(400).repeat(0).playOn(associatedButton);
                 pressedButton.setVisibility(View.INVISIBLE);
-                //pressedButton.setOnClickListener(null);
                 associatedButton.setVisibility(View.INVISIBLE);
 
                 game.setCurrentPoints(game.getCurrentPoints() + GAME_POINTS);
