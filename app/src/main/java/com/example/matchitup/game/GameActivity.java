@@ -116,11 +116,16 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 level.setText(game.getGameModeString());
                 gameState.setText("");
 
+                Log.d("update", Integer.toString(game.getCorrectWords()));
+
                 if (game.isRoundFinished()) {
                     gameViewPager.setAdapter(gameViewPagerAdapter);
+                }
 
-                    if(!game.isNextRound())
-                        nextBtnLayout.setVisibility(View.GONE);
+                if(game.isNextRound()) {
+                    nextBtnLayout.setVisibility(View.VISIBLE);
+                } else {
+                    nextBtnLayout.setVisibility(View.GONE);
                 }
             } else {
                 game.updateWords(new ArrayList<Word>());
@@ -450,8 +455,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
             if (data != null) {
                 game.updateWords(data);
 
-                if (!game.getWordMap().isEmpty() && !game.lackOfInfo())
+                if (!game.getWordMap().isEmpty() && !game.lackOfInfo()) {
                     game.setCorrectWords(0);
+                    nextBtnLayout.setVisibility(View.GONE);
+                }
             }
             else {
                 game.updateWords(new ArrayList<Word>());
