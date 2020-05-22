@@ -1,9 +1,7 @@
-package com.example.matchitup.dictionary;
+package com.example.matchitup;
 
 import android.net.Uri;
 import android.util.Log;
-
-import com.example.matchitup.BuildConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;

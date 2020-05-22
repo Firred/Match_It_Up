@@ -6,8 +6,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
-import com.example.matchitup.dictionary.DictionaryService;
-
 import java.util.ArrayList;
 import java.util.List;
 
