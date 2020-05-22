@@ -81,7 +81,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
             Intent intent = getIntent();
             int gameMode = intent.getIntExtra("start_game", 0);
 
-            GameFactory games = new GameFactory();
+            GameFactoryInterface games = new GameFactory();
 
             switch(gameMode){
                 case R.id.btnEasy: game = games.easyGame(getString(R.string.level_easy),
