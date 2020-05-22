@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class GameActivity extends AppCompatActivity implements Observer {
-    private final String STATE_LANGUAGE = "language", STATE_GAME = "game", STATE_NOTIFICATION="not";
+    private final String STATE_LANGUAGE = "language", STATE_GAME = "game";
     private final int WORD_LOADER_ID = 501;
     private static final int WORDS_VIEW = 0;
     private static final int DEFINITIONS_VIEW = 1;
@@ -99,6 +100,15 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
             requestNewWords();
         }
+    }
+
+    /**
+     * Method which is called after onRestoreInstanceState(Bundle), onRestart(), or onPause()
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((Button)nextBtnLayout.findViewById(R.id.nextBtn)).setText(R.string.next_game);
     }
 
     /**
